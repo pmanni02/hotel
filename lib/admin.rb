@@ -16,9 +16,13 @@ module Hotel
       rooms = []
       num_rooms.times do |i|
         id = i + 1
-        rooms << Hotel::Room.new(id)
+        rooms << create_room_instance(id)
       end
       return rooms
+    end
+
+    def create_room_instance(id)
+      return Hotel::Room.new(id)
     end
 
   end

@@ -32,7 +32,13 @@ describe "Admin class" do
       @initial_rooms.first.room_id.must_equal 1
       @initial_rooms.last.room_id.must_equal 20
     end
+  end
 
+  describe "#create_room_instance" do
+    it "returns a Room instance" do
+      id = 1
+      @admin.create_room_instance(id).must_be_instance_of Hotel::Room
+    end
   end
 
 end
