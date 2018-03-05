@@ -1,6 +1,8 @@
 require_relative 'reservation'
 require_relative 'room'
 
+require 'date'
+
 module Hotel
   class Admin
 
@@ -25,7 +27,30 @@ module Hotel
       if id.class == Integer
         return Hotel::Room.new(id)
       else
-        raise ArgumentError.new("Id must be an Integer")
+        raise ArgumentError.new("ID is invalid")
+      end
+    end
+
+    def create_reservation(reservation_data)
+      #check input (reservaion_data)
+      if check_reservation_data(reservation_data)
+        #get available room
+
+        #make reservation instance
+        #add reservation to reservations array
+        #update rooms array
+      else
+        raise StandardError.new("Date range is invalid")
+      end
+    end
+
+    def check_reservation_data(reservation_data)
+      start_time = reservation_data[:start_date].to_time
+      end_time = reservation_data[:end_date].to_time
+      if end_time - start_time < 0
+        return false
+      else
+        return true
       end
     end
 

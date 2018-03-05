@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'date'
 require 'pry'
 
 describe "Admin class" do
@@ -46,10 +47,54 @@ describe "Admin class" do
       room.must_be_instance_of Hotel::Room
     end
 
-    it "throws an ArgumentError if id is not an Integer" do
+    it "raises an ArgumentError if id is not an Integer" do
       proc {
         @admin.create_room_instance(@bad_id)
       }.must_raise ArgumentError
+    end
+  end
+
+  describe "#create_reservation" do
+    before do
+      @reservation_data = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+
+      @bad_reservation_data = {
+        start_date: Date.new(2018, 05, 05),
+        end_date: Date.new(2018, 01, 01)
+      }
+    end
+
+    it "raises a StandardError for invalid date range" do
+      proc {
+        @admin.create_reservation(@bad_reservation_data)
+      }.must_raise StandardError
+    end
+  end
+
+  describe "#check_reservation_data" do
+    before do
+      @reservation_data = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+
+      @bad_reservation_data = {
+        start_date: Date.new(2018, 05, 05),
+        end_date: Date.new(2018, 01, 01)
+      }
+    end
+
+    it "returns true for a valid date range" do
+      reservation = @admin.check_reservation_data(@reservation_data)
+      reservation.must_equal true
+    end
+
+    it "returns false for an invalid date range" do
+      reservation = @admin.check_reservation_data(@bad_reservation_data)
+      reservation.must_equal false
     end
   end
 
