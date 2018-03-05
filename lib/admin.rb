@@ -4,11 +4,20 @@ require_relative 'room'
 module Hotel
   class Admin
 
-    attr_reader :reservations, :rooms
+    attr_reader :reservations, :num_rooms, :rooms
 
     def initialize
       @reservations = []
-      @rooms = []
+      @num_rooms = 20
+      @rooms = create_rooms
+    end
+
+    def create_rooms
+      rooms = []
+      num_rooms.times do |i|
+        rooms << Hotel::Room.new
+      end
+      return rooms
     end
 
   end
