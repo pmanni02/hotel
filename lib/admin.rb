@@ -31,9 +31,9 @@ module Hotel
       end
     end
 
-    def create_reservation(reservation_data)
+    def create_reservation(date_range)
       #check input (reservaion_data)
-      if check_reservation_data(reservation_data)
+      if check_date_range(date_range)
         #get available room
 
         #make reservation instance
@@ -44,9 +44,9 @@ module Hotel
       end
     end
 
-    def check_reservation_data(reservation_data)
-      start_time = reservation_data[:start_date].to_time
-      end_time = reservation_data[:end_date].to_time
+    def check_date_range(date_range)
+      start_time = date_range[:start_date].to_time
+      end_time = date_range[:end_date].to_time
       if end_time - start_time < 0
         return false
       else

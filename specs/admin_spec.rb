@@ -56,12 +56,12 @@ describe "Admin class" do
 
   describe "#create_reservation" do
     before do
-      @reservation_data = {
+      @date_range = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
 
-      @bad_reservation_data = {
+      @bad_date_range = {
         start_date: Date.new(2018, 05, 05),
         end_date: Date.new(2018, 01, 01)
       }
@@ -69,31 +69,31 @@ describe "Admin class" do
 
     it "raises a StandardError for invalid date range" do
       proc {
-        @admin.create_reservation(@bad_reservation_data)
+        @admin.create_reservation(@bad_date_range)
       }.must_raise StandardError
     end
   end
 
-  describe "#check_reservation_data" do
+  describe "#check_date_range" do
     before do
-      @reservation_data = {
+      @date_range = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
 
-      @bad_reservation_data = {
+      @bad_date_range = {
         start_date: Date.new(2018, 05, 05),
         end_date: Date.new(2018, 01, 01)
       }
     end
 
     it "returns true for a valid date range" do
-      reservation = @admin.check_reservation_data(@reservation_data)
+      reservation = @admin.check_date_range(@date_range)
       reservation.must_equal true
     end
 
     it "returns false for an invalid date range" do
-      reservation = @admin.check_reservation_data(@bad_reservation_data)
+      reservation = @admin.check_date_range(@bad_date_range)
       reservation.must_equal false
     end
   end
