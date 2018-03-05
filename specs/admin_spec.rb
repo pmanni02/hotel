@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Admin class" do
 
@@ -20,7 +21,7 @@ describe "Admin class" do
 
   describe "#create_rooms" do
     before do
-      @initial_rooms = @admin.create_rooms
+      @initial_rooms = @admin.create_rooms_array
     end
 
     it "returns an array of Room instances" do
@@ -35,9 +36,20 @@ describe "Admin class" do
   end
 
   describe "#create_room_instance" do
+    before do
+      @id = 1
+      @bad_id = 'id'
+    end
+
     it "returns a Room instance" do
-      id = 1
-      @admin.create_room_instance(id).must_be_instance_of Hotel::Room
+      room = @admin.create_room_instance(@id)
+      room.must_be_instance_of Hotel::Room
+    end
+
+    it "throws an ArgumentError if id is not an Integer" do
+      proc {
+        @admin.create_room_instance(@bad_id)
+      }.must_raise ArgumentError
     end
   end
 

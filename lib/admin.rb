@@ -9,10 +9,10 @@ module Hotel
     def initialize
       @reservations = []
       @num_rooms = 20
-      @rooms = create_rooms
+      @rooms = create_rooms_array
     end
 
-    def create_rooms
+    def create_rooms_array
       rooms = []
       num_rooms.times do |i|
         id = i + 1
@@ -22,7 +22,11 @@ module Hotel
     end
 
     def create_room_instance(id)
-      return Hotel::Room.new(id)
+      if id.class == Integer
+        return Hotel::Room.new(id)
+      else
+        raise ArgumentError.new("Id must be an Integer")
+      end
     end
 
   end
