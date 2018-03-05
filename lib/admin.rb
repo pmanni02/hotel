@@ -31,12 +31,12 @@ module Hotel
       end
     end
 
-    def create_reservation(date_range)
-      #check input (reservaion_data)
-      if check_date_range(date_range)
-        #get available room
+    def add_reservation(date_range)
+      #is there an available room (WAVE #2)
 
+      if check_date_range(date_range)
         #make reservation instance
+
         #add reservation to reservations array
         #update rooms array
       else
@@ -52,6 +52,10 @@ module Hotel
       else
         return true
       end
+    end
+
+    def create_reservation(date_range)
+      return Hotel::Reservation.new(date_range)
     end
 
   end

@@ -54,7 +54,7 @@ describe "Admin class" do
     end
   end
 
-  describe "#create_reservation" do
+  describe "#add_reservation" do
     before do
       @date_range = {
         start_date: Date.new(2018, 03, 05),
@@ -69,7 +69,7 @@ describe "Admin class" do
 
     it "raises a StandardError for invalid date range" do
       proc {
-        @admin.create_reservation(@bad_date_range)
+        @admin.add_reservation(@bad_date_range)
       }.must_raise StandardError
     end
   end
@@ -95,6 +95,16 @@ describe "Admin class" do
     it "returns false for an invalid date range" do
       reservation = @admin.check_date_range(@bad_date_range)
       reservation.must_equal false
+    end
+  end
+
+  describe "#create_reservation" do
+    it "returns a Reservation instance" do
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+      @admin.create_reservation(date_range).must_be_instance_of Hotel::Reservation
     end
   end
 
