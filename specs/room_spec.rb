@@ -12,7 +12,7 @@ describe "Room class" do
     end
 
     it "creates initial data structures" do
-      @room.is_reserved.must_equal FALSE
+      @room.is_reserved.must_equal false
       @room.room_id.must_be_kind_of Integer
     end
   end
