@@ -65,5 +65,17 @@ module Hotel
       return Hotel::Reservation.new(date_range, cost)
     end
 
+    def get_reservation_list(date)
+      reservation_list = []
+      if reservations.length != 0
+      #iterate through reservations
+      #check date against start and end dates of each reservation
+        #if date is within the range, add reservation to list of reservations
+      #return reservation_list
+      else
+        return reservation_list
+      end
+    end
+
   end
 end

@@ -116,4 +116,57 @@ describe "Admin class" do
     end
   end
 
+  describe "#get_reservation_list(date)" do
+    it "returns an array" do
+      date = Date.new(2018, 03, 05)
+      list = @admin.get_reservation_list(date)
+      list.must_be_kind_of Array
+    end
+
+    it "returns an empty array if there are no reservations" do
+      date = Date.new(2018, 04, 05)
+      @admin.get_reservation_list(date).must_equal []
+    end
+
+    it "returns correct array if date is end_date of a reservation" do
+      skip
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+      @admin.create_reservation(date_range)
+      list = @admin.get_reservation_list(Date.new(2018, 03, 10))
+
+      list.first.start_date.must_equal Date.new(2018, 03, 05)
+      list.last.end_date.must_equal Date.new(2018, 03, 10)
+    end
+
+    it "returns correct array if date is start_date of a reservation" do
+      skip
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+      @admin.create_reservation(date_range)
+      list = @admin.get_reservation_list(Date.new(2018, 03, 05))
+
+      list.first.start_date.must_equal Date.new(2018, 03, 05)
+      list.last.end_date.must_equal Date.new(2018, 03, 10)
+    end
+
+    it "returns correct array if date is in between start_date and end_date" do
+      skip
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+      @admin.create_reservation(date_range)
+      # date = Date.new(2018, 03, 08)
+      list = @admin.get_reservation_list(Date.new(2018, 03, 06))
+
+      list.first.start_date.must_equal Date.new(2018, 03, 05)
+      list.last.end_date.must_equal Date.new(2018, 03, 10)
+    end
+  end
+
 end
