@@ -66,15 +66,12 @@ module Hotel
     end
 
     def get_reservation_list(date)
-      reservation_list = []
+      # reservation_list = []
       if reservations.length != 0
-        #iterate through reservations
-        # reservations.select {|reservation| }
-        #check date against start and end dates of each reservation
-          #if date is within the range, add reservation to list of reservations
-        #return reservation_list
-      else
+        reservation_list = reservations.select {|reservation| compare_dates(reservation, date)}
         return reservation_list
+      else
+        return []
       end
     end
 
@@ -88,7 +85,7 @@ module Hotel
       #date is not w/i the reservation date_range
       elsif ((date <=> start_date) == -1) || ((end_date <=> date) == -1)
         return false
-      #date is either equal to the start_date or the end_date
+      #date is either equal to the start_date or to the end_date
       else
         return true
       end
