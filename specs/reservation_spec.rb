@@ -20,7 +20,13 @@ describe "Reservation class" do
       @reservation.end_date.must_be_kind_of Date
       @reservation.cost.must_be_kind_of Integer
       @reservation.room_id.must_be_kind_of Integer
-      @reservation.reservation_id.must_be_kind_of Integer
+      # @reservation.reservation_id.must_be_kind_of Integer
     end
   end
+
+  # describe "#get_id" do
+  #   it "returns an Integer" do
+  #     @reservation.get_id.must_be_kind_of Integer
+  #   end
+  # end
 end

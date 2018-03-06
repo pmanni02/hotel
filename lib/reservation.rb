@@ -8,8 +8,12 @@ module Hotel
       @end_date = date_range[:end_date]
       @cost = cost
       @room_id = 1
-      @reservation_id = get_id
+      # @reservation_id = get_id
     end
+
+    # def get_id
+    #
+    # end
 
   end
 end
