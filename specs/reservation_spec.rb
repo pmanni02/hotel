@@ -2,12 +2,12 @@ require_relative 'spec_helper'
 
 describe "Reservation class" do
   before do
-    cost = 800
+    # cost = 800
     date_range = {
       start_date: Date.new(2018, 03, 05),
       end_date: Date.new(2018, 03, 10)
     }
-    @reservation = Hotel::Reservation.new(date_range, cost)
+    @reservation = Hotel::Reservation.new(date_range)
   end
 
   describe "Initializer" do
@@ -21,6 +21,12 @@ describe "Reservation class" do
       @reservation.cost.must_be_kind_of Integer
       @reservation.room_id.must_be_kind_of Integer
       # @reservation.reservation_id.must_be_kind_of Integer
+    end
+  end
+
+  describe "#calculate_cost" do
+    it "returns an Integer" do
+      @reservation.cost.must_be_kind_of Integer
     end
   end
 

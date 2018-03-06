@@ -106,16 +106,6 @@ describe "Admin class" do
     end
   end
 
-  describe "#create_reservation" do
-    it "returns a Reservation instance" do
-      date_range = {
-        start_date: Date.new(2018, 03, 05),
-        end_date: Date.new(2018, 03, 10)
-      }
-      @admin.create_reservation(date_range).must_be_instance_of Hotel::Reservation
-    end
-  end
-
   describe "#get_reservation_list(date)" do
     it "returns an array" do
       date = Date.new(2018, 03, 05)
@@ -159,7 +149,7 @@ describe "Admin class" do
       }
       @admin.add_reservation(date_range)
       list = @admin.get_reservation_list(Date.new(2018, 03, 06))
-      
+
       list.first.start_date.must_equal Date.new(2018, 03, 05)
       list.last.end_date.must_equal Date.new(2018, 03, 10)
     end

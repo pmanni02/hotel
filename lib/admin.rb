@@ -16,6 +16,8 @@ module Hotel
       @rooms = create_rooms_array
     end
 
+#---------------------------------------------------------------------#
+
     def create_rooms_array
       rooms = []
       num_rooms.times do |i|
@@ -33,17 +35,15 @@ module Hotel
       end
     end
 
+#---------------------------------------------------------------------#
+
     def add_reservation(date_range)
       #is there an available room (WAVE #2)
-
       if check_date_range(date_range)
-        #make reservation instance
-        reservation = create_reservation(date_range)
-        #add reservation to reservations array
-        reservations << reservation
-
+        # reservation = create_reservation(date_range)
+        new_reservation = Hotel::Reservation.new(date_range)
+        reservations << new_reservation
         #update rooms array(WAVE #2)
-
       else
         raise StandardError.new("Date range is invalid")
       end
@@ -59,16 +59,11 @@ module Hotel
       end
     end
 
-    def create_reservation(date_range)
-      total_days = (date_range[:end_date] - date_range[:start_date]).to_i
-      cost = (total_days - 1) * cost_per_day
-      return Hotel::Reservation.new(date_range, cost)
-    end
+#---------------------------------------------------------------------#
 
     def get_reservation_list(date)
-      # reservation_list = []
       if reservations.length != 0
-        reservation_list = reservations.select {|reservation| compare_dates(reservation, date)}
+        reservation_list = reservations.select { |reservation| compare_dates(reservation, date) }
         return reservation_list
       else
         return []
@@ -78,7 +73,6 @@ module Hotel
     def compare_dates(reservation, date)
       start_date = reservation.start_date
       end_date = reservation.end_date
-
       #date is w/i the reservation date_range
       if ((date <=> start_date) == 1) && ((end_date <=> date) == 1)
         return true
