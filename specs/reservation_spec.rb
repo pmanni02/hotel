@@ -25,8 +25,17 @@ describe "Reservation class" do
   end
 
   describe "#calculate_cost" do
-    it "returns an Integer" do
-      @reservation.cost.must_be_kind_of Integer
+    it "accurately calculates cost" do
+      @reservation.cost.must_equal 800
+    end
+
+    it "accurately calculates cost for one day" do
+      one_day = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 05)
+      }
+      reservation = Hotel::Reservation.new(one_day)
+      reservation.cost.must_equal 200
     end
   end
 
