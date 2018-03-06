@@ -72,6 +72,15 @@ describe "Admin class" do
         @admin.add_reservation(@bad_date_range)
       }.must_raise StandardError
     end
+
+    it "adds new reservation to reservations array" do
+      initial_length = @admin.reservations.length
+      @admin.add_reservation(@date_range)
+      new_length = @admin.reservations.length
+
+      new_length.must_equal initial_length + 1
+    end
+
   end
 
   describe "#check_date_range" do

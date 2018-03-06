@@ -36,9 +36,11 @@ module Hotel
 
       if check_date_range(date_range)
         #make reservation instance
-
+        reservation = create_reservation(date_range)
         #add reservation to reservations array
+        reservations << reservation
         #update rooms array
+
       else
         raise StandardError.new("Date range is invalid")
       end
