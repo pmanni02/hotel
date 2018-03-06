@@ -6,11 +6,13 @@ require 'date'
 module Hotel
   class Admin
 
-    attr_reader :reservations, :num_rooms, :rooms
+    attr_reader :reservations, :num_rooms, :rooms, :cost_per_day, :reservation_id_tracker
 
     def initialize
       @reservations = []
       @num_rooms = 20
+      @cost_per_day = 200
+      # @reservation_id_tracker = 0
       @rooms = create_rooms_array
     end
 
@@ -57,7 +59,9 @@ module Hotel
     end
 
     def create_reservation(date_range)
-      return Hotel::Reservation.new(date_range)
+      total_days = (date_range[:start_date] - date_range[:end_date]).to_i
+      cost = (total_days - 1) * cost_per_day
+      return Hotel::Reservation.new(date_range, cost)
     end
 
   end

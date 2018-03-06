@@ -80,7 +80,6 @@ describe "Admin class" do
 
       new_length.must_equal initial_length + 1
     end
-
   end
 
   describe "#check_date_range" do
