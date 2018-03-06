@@ -41,7 +41,8 @@ module Hotel
         reservation = create_reservation(date_range)
         #add reservation to reservations array
         reservations << reservation
-        #update rooms array
+
+        #update rooms array(WAVE #2)
 
       else
         raise StandardError.new("Date range is invalid")
@@ -59,7 +60,7 @@ module Hotel
     end
 
     def create_reservation(date_range)
-      total_days = (date_range[:start_date] - date_range[:end_date]).to_i
+      total_days = (date_range[:end_date] - date_range[:start_date]).to_i
       cost = (total_days - 1) * cost_per_day
       return Hotel::Reservation.new(date_range, cost)
     end
