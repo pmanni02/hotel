@@ -230,8 +230,6 @@ describe "Admin class" do
         start_date: Date.new(2018, 05, 19),
         end_date: Date.new(2018, 05, 25)
       }
-
-      @all_rooms = (1..20).to_a
     end
 
     it "returns an Array of Integers (Room Ids)" do
@@ -249,26 +247,7 @@ describe "Admin class" do
       available_rooms.must_equal []
     end
 
-    it "returns correct Array of Integers when there are multiple reservations" do
-      room_id1 = 1
-      room_id2 = 17
-      room_id3 = 20
-      @admin.add_reservation(@date_range1, room_id1)
-      @admin.add_reservation(@date_range2, room_id2)
-      @admin.add_reservation(@date_range3, room_id3)
-      # binding.pry
-
-      date_range = {
-        start_date: Date.new(2018, 04, 02),
-        end_date: Date.new(2018, 04, 06)
-      }
-
-      available_rooms = @admin.get_unreserved_rooms(date_range)
-      #all rooms EXCEPT #17 should be available
-      available_rooms.must_equal  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]
-    end
-
-    it "returns all rooms when start_date of new reservation == end date of one previous reservation" do
+    it "returns all room ids when start_date of new reservation == end date of one previous reservation" do
       room_id = 1
       @admin.add_reservation(@date_range1, room_id)
 
@@ -278,8 +257,74 @@ describe "Admin class" do
       }
 
       available_rooms = @admin.get_unreserved_rooms(date_range)
-      available_rooms.must_equal @all_rooms
+      available_rooms.must_equal (1..20).to_a
     end
+
+    it "returns 19 room ids when date range is completely within an established reservation range" do
+      room_id = 1
+      @admin.add_reservation(@date_range1, room_id)
+
+      date_range = {
+        start_date: Date.new(2018, 03, 06),
+        end_date: Date.new(2018, 03, 9)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      available_rooms.must_equal (2..20).to_a
+    end
+
+    it "returns 19 room ids when date range is exactly the same as an established reservation range" do
+      room_id = 1
+      @admin.add_reservation(@date_range1, room_id)
+
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      available_rooms.must_equal (2..20).to_a
+    end
+
+    it "returns 20 room ids when date range is completely outside of an established reservation range" do
+      room_id = 1
+      @admin.add_reservation(@date_range1, room_id)
+
+      date_range = {
+        start_date: Date.new(2018, 03, 12),
+        end_date: Date.new(2018, 03, 15)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      available_rooms.must_equal (1..20).to_a
+    end
+
+    it "returns 19 room ids when date range overlaps an established reservation range once" do
+      room_id = 1
+      @admin.add_reservation(@date_range1, room_id)
+
+      date_range = {
+        start_date: Date.new(2018, 03, 4),
+        end_date: Date.new(2018, 03, 9)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      available_rooms.must_equal (2..20).to_a
+    end
+
+    it "returns 19 room ids when date range overlaps an established reservation range twice" do
+      room_id = 1
+      @admin.add_reservation(@date_range1, room_id)
+
+      date_range = {
+        start_date: Date.new(2018, 03, 4),
+        end_date: Date.new(2018, 03, 12)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      available_rooms.must_equal (2..20).to_a
+    end
+
   end
 
 end
