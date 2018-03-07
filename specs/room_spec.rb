@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe "Room class" do
   before do
     id = 1
-    @room = Hotel::Room.new(id)
+    @room = Hotel::Room.new(id, false)
   end
 
   describe "Initializer" do
@@ -12,7 +12,7 @@ describe "Room class" do
     end
 
     it "creates initial data structures" do
-      @room.is_reserved.must_equal true 
+      @room.is_reserved.must_equal false
       @room.room_id.must_be_kind_of Integer
     end
   end
