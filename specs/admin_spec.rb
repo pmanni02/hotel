@@ -125,8 +125,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      room = 1
-      @admin.add_reservation(date_range, room)
+      room_id = 1
+      @admin.add_reservation(date_range, room_id)
       list = @admin.get_reservation_list(Date.new(2018, 03, 10))
 
       list.first.start_date.must_equal Date.new(2018, 03, 05)
@@ -138,8 +138,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      room = 1
-      @admin.add_reservation(date_range, room)
+      room_id = 1
+      @admin.add_reservation(date_range, room_id)
       list = @admin.get_reservation_list(Date.new(2018, 03, 05))
 
       list.first.start_date.must_equal Date.new(2018, 03, 05)
@@ -151,8 +151,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      room = 1
-      @admin.add_reservation(date_range, room)
+      room_id = 1
+      @admin.add_reservation(date_range, room_id)
       list = @admin.get_reservation_list(Date.new(2018, 03, 06))
 
       list.first.start_date.must_equal Date.new(2018, 03, 05)
@@ -168,9 +168,9 @@ describe "Admin class" do
         start_date: Date.new(2017, 07, 05),
         end_date: Date.new(2017, 07, 23)
       }
-      room = 1
-      @admin.add_reservation(date_range1, room)
-      @admin.add_reservation(date_range2, room)
+      room_id = 1
+      @admin.add_reservation(date_range1, room_id)
+      @admin.add_reservation(date_range2, room_id)
 
       list = @admin.get_reservation_list(Date.new(2018, 03, 11))
       list.must_equal []
@@ -183,8 +183,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      room = 1
-      @admin.add_reservation(date_range, room)
+      room_id = 1
+      @admin.add_reservation(date_range, room_id)
       @reservation = @admin.reservations.first
     end
 
@@ -215,26 +215,53 @@ describe "Admin class" do
 
   describe "#get_unreserved_rooms(date_range)" do
     before do
-      @date_range = {
+      @date_range1 = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
+      }
+
+      @date_range2 = {
+        start_date: Date.new(2018, 03, 01),
+        end_date: Date.new(2018, 05, 20)
+      }
+
+      @date_range3 = {
+        start_date: Date.new(2018, 05, 19),
+        end_date: Date.new(2018, 05, 25)
       }
     end
 
     it "returns an Array of Integers (Room Ids)" do
-      @admin.get_unreserved_rooms(@date_range).must_be_kind_of Array
-      @admin.get_unreserved_rooms(@date_range).all? {
+      @admin.get_unreserved_rooms(@date_range1).must_be_kind_of Array
+      @admin.get_unreserved_rooms(@date_range1).all? {
         |room| room.must_be_kind_of Integer
       }
     end
 
     it "returns an empty Array if there are no available rooms" do
-      # available_rooms = @admin.get_unreserved_rooms(@date_range)
-
+      @admin.num_rooms.times do |num|
+        @admin.add_reservation(@date_range1, num + 1)
+      end
+      available_rooms = @admin.get_unreserved_rooms(@date_range1)
+      available_rooms.must_equal []
     end
 
     it "returns correct Array of Integers when there are multiple reservations" do
+      room_id1 = 1
+      room_id2 = 17
+      room_id3 = 20
+      reservation1 = @admin.add_reservation(@date_range1, room_id1)
+      reservation2 = @admin.add_reservation(@date_range2, room_id2)
+      reservation3 = @admin.add_reservation(@date_range3, room_id3)
 
+      date_range = {
+        start_date: Date.new(2018, 04, 02),
+        end_date: Date.new(2018, 04, 06)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      #all rooms EXCEPT #17 should be available
+      available_rooms.must_equal [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]
     end
   end
 
