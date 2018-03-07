@@ -65,17 +65,19 @@ describe "Admin class" do
         start_date: Date.new(2018, 05, 05),
         end_date: Date.new(2018, 01, 01)
       }
+
+      @room = 1
     end
 
     it "raises a StandardError for invalid date range" do
       proc {
-        @admin.add_reservation(@bad_date_range)
+        @admin.add_reservation(@bad_date_range, @room)
       }.must_raise StandardError
     end
 
     it "adds new reservation to reservations array" do
       initial_length = @admin.reservations.length
-      @admin.add_reservation(@date_range)
+      @admin.add_reservation(@date_range, @room)
       new_length = @admin.reservations.length
 
       new_length.must_equal initial_length + 1
@@ -123,7 +125,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      @admin.add_reservation(date_range)
+      room = 1
+      @admin.add_reservation(date_range, room)
       list = @admin.get_reservation_list(Date.new(2018, 03, 10))
 
       list.first.start_date.must_equal Date.new(2018, 03, 05)
@@ -135,7 +138,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      @admin.add_reservation(date_range)
+      room = 1
+      @admin.add_reservation(date_range, room)
       list = @admin.get_reservation_list(Date.new(2018, 03, 05))
 
       list.first.start_date.must_equal Date.new(2018, 03, 05)
@@ -147,7 +151,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      @admin.add_reservation(date_range)
+      room = 1
+      @admin.add_reservation(date_range, room)
       list = @admin.get_reservation_list(Date.new(2018, 03, 06))
 
       list.first.start_date.must_equal Date.new(2018, 03, 05)
@@ -163,8 +168,9 @@ describe "Admin class" do
         start_date: Date.new(2017, 07, 05),
         end_date: Date.new(2017, 07, 23)
       }
-      @admin.add_reservation(date_range1)
-      @admin.add_reservation(date_range2)
+      room = 1
+      @admin.add_reservation(date_range1, room)
+      @admin.add_reservation(date_range2, room)
 
       list = @admin.get_reservation_list(Date.new(2018, 03, 11))
       list.must_equal []
@@ -177,7 +183,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      @admin.add_reservation(date_range)
+      room = 1
+      @admin.add_reservation(date_range, room)
       @reservation = @admin.reservations.first
     end
 
@@ -227,7 +234,7 @@ describe "Admin class" do
     end
 
     it "returns correct Array of Integers when there are multiple reservations" do
-      
+
     end
   end
 

@@ -36,11 +36,11 @@ module Hotel
 
 #---------------------------------------------------------------------#
 
-    def add_reservation(date_range)
+    def add_reservation(date_range, room)
       #is there an available room (WAVE #2)
       if check_date_range(date_range)
         # reservation = create_reservation(date_range)
-        new_reservation = Hotel::Reservation.new(date_range)
+        new_reservation = Hotel::Reservation.new(date_range, room)
         reservations << new_reservation
         #update rooms array(WAVE #2)
       else

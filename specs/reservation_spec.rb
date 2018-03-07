@@ -7,7 +7,8 @@ describe "Reservation class" do
       start_date: Date.new(2018, 03, 05),
       end_date: Date.new(2018, 03, 10)
     }
-    @reservation = Hotel::Reservation.new(date_range)
+    room = 1
+    @reservation = Hotel::Reservation.new(date_range, room)
   end
 
   describe "Initializer" do
@@ -34,7 +35,8 @@ describe "Reservation class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 05)
       }
-      reservation = Hotel::Reservation.new(one_day)
+      room = 1
+      reservation = Hotel::Reservation.new(one_day, room)
       reservation.cost.must_equal 200
     end
   end
