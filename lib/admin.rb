@@ -40,11 +40,9 @@ module Hotel
     def add_reservation(date_range, room_id)
       #is there an available room (WAVE #2)
       if check_date_range(date_range)
-        # reservation = create_reservation(date_range)
-        room = create_room_instance(room_id, true)
-        # room.is_reserved = true
+        room = @rooms.select {|room| room.room_id == room_id}.first
+        room.is_reserved = true
         new_reservation = Hotel::Reservation.new(date_range, room)
-        # new_reservation.room.is_reserved = true
         reservations << new_reservation
       else
         raise StandardError.new("Date range is invalid")
