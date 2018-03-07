@@ -83,6 +83,14 @@ describe "Admin class" do
 
       new_length.must_equal initial_length + 1
     end
+
+    it "raises a StandardError if room is unavailable" do
+      room_id = 1
+      @admin.add_reservation(@date_range, room_id)
+      proc {
+        @admin.add_reservation(@date_range, room_id)
+      }.must_raise StandardError
+    end
   end
 
   describe "#check_date_range" do

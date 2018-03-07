@@ -39,7 +39,7 @@ module Hotel
 
     def add_reservation(date_range, room_id)
       #is there an available room (WAVE #2)
-      if check_date_range(date_range)
+      if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
         room = @rooms.select {|room| room.room_id == room_id}.first
         room.is_reserved = true
         new_reservation = Hotel::Reservation.new(date_range, room)
@@ -89,7 +89,6 @@ module Hotel
 #---------------------------------------------------------------------#
 
     def get_unreserved_rooms(date_range)
-      #TODO: FIGURE OUT HOW TO GET ROOM IDS THAT ARE NOT INCLUDED IN RESERVATIONS ARRAY
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
       unreserved_rooms = []
@@ -100,15 +99,14 @@ module Hotel
         if desired_end_date <= reservation_start || desired_start_date >= reservation_end
           unreserved_rooms << reservation.room.room_id
         end
-
       end
-      #iterate through rooms array and return array of rooms where is_available is true (call available_rooms)
+
       rooms.each do |room|
         if room.is_reserved == false
           unreserved_rooms << room.room_id
         end
       end
-      #return unreserved_rooms + available rooms (get rid of duplicates and sort)
+
       return unreserved_rooms.sort.uniq
     end
 
