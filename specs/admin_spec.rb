@@ -66,18 +66,18 @@ describe "Admin class" do
         end_date: Date.new(2018, 01, 01)
       }
 
-      @room = 1
+      @room_id = 1
     end
 
     it "raises a StandardError for invalid date range" do
       proc {
-        @admin.add_reservation(@bad_date_range, @room)
+        @admin.add_reservation(@bad_date_range, @room_id)
       }.must_raise StandardError
     end
 
     it "adds new reservation to reservations array" do
       initial_length = @admin.reservations.length
-      @admin.add_reservation(@date_range, @room)
+      @admin.add_reservation(@date_range, @room_id)
       new_length = @admin.reservations.length
 
       new_length.must_equal initial_length + 1
@@ -191,25 +191,25 @@ describe "Admin class" do
     it "returns true if date is w/i date range of the reservation" do
       date = Date.new(2018, 03, 07)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_equal true
+      compare.must_be :>=, 0
     end
 
     it "returns true if date == start_date of a reservation" do
       date = Date.new(2018, 03, 05)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_equal true
+      compare.must_be :>=, 0
     end
 
     it "returns true if date == end_date of a reservation" do
       date = Date.new(2018, 03, 10)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_equal true
+      compare.must_be :>=, 0
     end
 
     it "returns false if date is NOT w/i date range of the reservation" do
       date = Date.new(2018, 04, 01)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_equal false
+      compare.must_be :<, 0
     end
   end
 
@@ -229,6 +229,8 @@ describe "Admin class" do
         start_date: Date.new(2018, 05, 19),
         end_date: Date.new(2018, 05, 25)
       }
+
+      @all_rooms = (1..20).to_a
     end
 
     it "returns an Array of Integers (Room Ids)" do
@@ -250,9 +252,9 @@ describe "Admin class" do
       room_id1 = 1
       room_id2 = 17
       room_id3 = 20
-      reservation1 = @admin.add_reservation(@date_range1, room_id1)
-      reservation2 = @admin.add_reservation(@date_range2, room_id2)
-      reservation3 = @admin.add_reservation(@date_range3, room_id3)
+      @admin.add_reservation(@date_range1, room_id1)
+      @admin.add_reservation(@date_range2, room_id2)
+      @admin.add_reservation(@date_range3, room_id3)
 
       date_range = {
         start_date: Date.new(2018, 04, 02),
@@ -261,7 +263,20 @@ describe "Admin class" do
 
       available_rooms = @admin.get_unreserved_rooms(date_range)
       #all rooms EXCEPT #17 should be available
-      available_rooms.must_equal [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]
+      available_rooms.must_equal  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]
+    end
+
+    it "returns all rooms when start_date of new reservation == end date of one previous reservation" do
+      room_id = 1
+      @admin.add_reservation(@date_range1, room_id)
+
+      date_range = {
+        start_date: Date.new(2018, 03, 10),
+        end_date: Date.new(2018, 03, 12)
+      }
+
+      available_rooms = @admin.get_unreserved_rooms(date_range)
+      available_rooms.must_equal @all_rooms
     end
   end
 
