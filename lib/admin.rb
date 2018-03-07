@@ -6,14 +6,13 @@ require 'date'
 module Hotel
   class Admin
 
-    attr_reader :reservations, :num_rooms, :rooms, :cost_per_day, :reservation_id_tracker
+    attr_reader :reservations, :num_rooms, :rooms, :reservation_id_tracker
 
     def initialize
       @reservations = []
       @num_rooms = 20
-      @cost_per_day = 200
-      # @reservation_id_tracker = 0
       @rooms = create_rooms_array
+      # @reservation_id_tracker = 0
     end
 
 #---------------------------------------------------------------------#
@@ -61,6 +60,7 @@ module Hotel
 
 #---------------------------------------------------------------------#
 
+    #TODO: add error if date is not a date object
     def get_reservation_list(date)
       if reservations.length != 0
         reservation_list = reservations.select { |reservation| compare_dates(reservation, date) }
@@ -73,16 +73,22 @@ module Hotel
     def compare_dates(reservation, date)
       start_date = reservation.start_date
       end_date = reservation.end_date
-      #date is w/i the reservation date_range
+      # date is w/i the reservation date_range
       if ((date <=> start_date) == 1) && ((end_date <=> date) == 1)
         return true
-      #date is not w/i the reservation date_range
+      # date is not w/i the reservation date_range
       elsif ((date <=> start_date) == -1) || ((end_date <=> date) == -1)
         return false
-      #date is either equal to the start_date or to the end_date
+      # date is either equal to the start_date or to the end_date
       else
         return true
       end
+    end
+
+#---------------------------------------------------------------------#
+
+    def get_unreserved_rooms(date_range)
+
     end
 
   end

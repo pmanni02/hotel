@@ -206,4 +206,29 @@ describe "Admin class" do
     end
   end
 
+  describe "#get_unreserved_rooms(date_range)" do
+    before do
+      @date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+    end
+
+    it "returns an Array of Integers (Room Ids)" do
+      @admin.get_unreserved_rooms(@date_range).must_be_kind_of Array
+      @admin.get_unreserved_rooms(@date_range).all? {
+        |room| room.must_be_kind_of Integer
+      }
+    end
+
+    it "returns an empty Array if there are no available rooms" do
+      # available_rooms = @admin.get_unreserved_rooms(@date_range)
+
+    end
+
+    it "returns correct Array of Integers when there are multiple reservations" do
+      
+    end
+  end
+
 end
