@@ -38,7 +38,6 @@ module Hotel
 #---------------------------------------------------------------------#
 
     def add_reservation(date_range, room_id)
-      #is there an available room (WAVE #2)
       if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
         room = @rooms.select {|room| room.room_id == room_id}.first
         room.is_reserved = true
@@ -64,7 +63,7 @@ module Hotel
     #TODO: add error if date is not a date object
     def get_reservation_list(date)
       if reservations.length != 0
-        reservation_list = reservations.select { |reservation| compare_dates(reservation, date) >= 0 }
+        reservation_list = reservations.select { |reservation| compare_dates(reservation, date) }
         return reservation_list
       else
         return []
@@ -74,15 +73,15 @@ module Hotel
     def compare_dates(reservation, date)
       start_date = reservation.start_date
       end_date = reservation.end_date
-      # date is w/i the reservation date_range (TRUE)
+      # date is w/i the reservation date_range
       if ((date <=> start_date) == 1) && ((end_date <=> date) == 1)
-        return 1
-      # date is NOT w/i the reservation date_range (FALSE)
+        return true
+      # date is NOT w/i the reservation date_range (
       elsif ((date <=> start_date) == -1) || ((end_date <=> date) == -1)
-        return -1
+        return false
       # date is either equal to the start_date or to the end_date (TRUE)
       elsif ((date <=> start_date) == 0) || ((end_date <=> date) == 0)
-        return 0
+        return true
       end
     end
 

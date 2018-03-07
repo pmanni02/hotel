@@ -200,25 +200,25 @@ describe "Admin class" do
     it "returns true if date is w/i date range of the reservation" do
       date = Date.new(2018, 03, 07)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_be :>=, 0
+      compare.must_equal true
     end
 
     it "returns true if date == start_date of a reservation" do
       date = Date.new(2018, 03, 05)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_be :>=, 0
+      compare.must_equal true
     end
 
     it "returns true if date == end_date of a reservation" do
       date = Date.new(2018, 03, 10)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_be :>=, 0
+      compare.must_equal true
     end
 
     it "returns false if date is NOT w/i date range of the reservation" do
       date = Date.new(2018, 04, 01)
       compare = @admin.compare_dates(@reservation, date)
-      compare.must_be :<, 0
+      compare.must_equal false
     end
   end
 
