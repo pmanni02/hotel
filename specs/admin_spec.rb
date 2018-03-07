@@ -213,71 +213,71 @@ describe "Admin class" do
     end
   end
 
-  describe "#get_unreserved_rooms(date_range)" do
-    before do
-      @date_range1 = {
-        start_date: Date.new(2018, 03, 05),
-        end_date: Date.new(2018, 03, 10)
-      }
-
-      @date_range2 = {
-        start_date: Date.new(2018, 03, 01),
-        end_date: Date.new(2018, 05, 20)
-      }
-
-      @date_range3 = {
-        start_date: Date.new(2018, 05, 19),
-        end_date: Date.new(2018, 05, 25)
-      }
-
-      @all_rooms = (1..20).to_a
-    end
-
-    it "returns an Array of Integers (Room Ids)" do
-      @admin.get_unreserved_rooms(@date_range1).must_be_kind_of Array
-      @admin.get_unreserved_rooms(@date_range1).all? {
-        |room| room.must_be_kind_of Integer
-      }
-    end
-
-    it "returns an empty Array if there are no available rooms" do
-      @admin.num_rooms.times do |num|
-        @admin.add_reservation(@date_range1, num + 1)
-      end
-      available_rooms = @admin.get_unreserved_rooms(@date_range1)
-      available_rooms.must_equal []
-    end
-
-    it "returns correct Array of Integers when there are multiple reservations" do
-      room_id1 = 1
-      room_id2 = 17
-      room_id3 = 20
-      @admin.add_reservation(@date_range1, room_id1)
-      @admin.add_reservation(@date_range2, room_id2)
-      @admin.add_reservation(@date_range3, room_id3)
-
-      date_range = {
-        start_date: Date.new(2018, 04, 02),
-        end_date: Date.new(2018, 04, 06)
-      }
-
-      available_rooms = @admin.get_unreserved_rooms(date_range)
-      #all rooms EXCEPT #17 should be available
-      available_rooms.must_equal  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]
-    end
-
-    it "returns all rooms when start_date of new reservation == end date of one previous reservation" do
-      room_id = 1
-      @admin.add_reservation(@date_range1, room_id)
-
-      date_range = {
-        start_date: Date.new(2018, 03, 10),
-        end_date: Date.new(2018, 03, 12)
-      }
-
-      available_rooms = @admin.get_unreserved_rooms(date_range)
-      available_rooms.must_equal @all_rooms
-    end
-  end
+  # describe "#get_unreserved_rooms(date_range)" do
+  #   before do
+  #     @date_range1 = {
+  #       start_date: Date.new(2018, 03, 05),
+  #       end_date: Date.new(2018, 03, 10)
+  #     }
+  #
+  #     @date_range2 = {
+  #       start_date: Date.new(2018, 03, 01),
+  #       end_date: Date.new(2018, 05, 20)
+  #     }
+  #
+  #     @date_range3 = {
+  #       start_date: Date.new(2018, 05, 19),
+  #       end_date: Date.new(2018, 05, 25)
+  #     }
+  #
+  #     @all_rooms = (1..20).to_a
+  #   end
+  #
+  #   it "returns an Array of Integers (Room Ids)" do
+  #     @admin.get_unreserved_rooms(@date_range1).must_be_kind_of Array
+  #     @admin.get_unreserved_rooms(@date_range1).all? {
+  #       |room| room.must_be_kind_of Integer
+  #     }
+  #   end
+  #
+  #   it "returns an empty Array if there are no available rooms" do
+  #     @admin.num_rooms.times do |num|
+  #       @admin.add_reservation(@date_range1, num + 1)
+  #     end
+  #     available_rooms = @admin.get_unreserved_rooms(@date_range1)
+  #     available_rooms.must_equal []
+  #   end
+  #
+  #   it "returns correct Array of Integers when there are multiple reservations" do
+  #     room_id1 = 1
+  #     room_id2 = 17
+  #     room_id3 = 20
+  #     @admin.add_reservation(@date_range1, room_id1)
+  #     @admin.add_reservation(@date_range2, room_id2)
+  #     @admin.add_reservation(@date_range3, room_id3)
+  #
+  #     date_range = {
+  #       start_date: Date.new(2018, 04, 02),
+  #       end_date: Date.new(2018, 04, 06)
+  #     }
+  #
+  #     available_rooms = @admin.get_unreserved_rooms(date_range)
+  #     #all rooms EXCEPT #17 should be available
+  #     available_rooms.must_equal  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20]
+  #   end
+  #
+  #   it "returns all rooms when start_date of new reservation == end date of one previous reservation" do
+  #     room_id = 1
+  #     @admin.add_reservation(@date_range1, room_id)
+  #
+  #     date_range = {
+  #       start_date: Date.new(2018, 03, 10),
+  #       end_date: Date.new(2018, 03, 12)
+  #     }
+  #
+  #     available_rooms = @admin.get_unreserved_rooms(date_range)
+  #     available_rooms.must_equal @all_rooms
+  #   end
+  # end
 
 end

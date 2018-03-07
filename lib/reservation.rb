@@ -1,14 +1,14 @@
 module Hotel
   class Reservation
 
-    attr_reader :start_date, :end_date, :cost_per_day, :cost, :room_id, :reservation_id
+    attr_reader :start_date, :end_date, :cost_per_day, :cost, :room, :reservation_id
 
-    def initialize(date_range, room_id)
+    def initialize(date_range, room)
       @start_date = date_range[:start_date]
       @end_date = date_range[:end_date]
       @cost_per_day = 200
       @cost = calculate_cost
-      @room_id = room_id
+      @room = room
       #TODO: @reservation_id = get_id
     end
 

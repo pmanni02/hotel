@@ -40,7 +40,8 @@ module Hotel
       #is there an available room (WAVE #2)
       if check_date_range(date_range)
         # reservation = create_reservation(date_range)
-        new_reservation = Hotel::Reservation.new(date_range, room_id)
+        room = create_room_instance(room_id)
+        new_reservation = Hotel::Reservation.new(date_range, room)
         reservations << new_reservation
         #update rooms array(WAVE #2)
 
@@ -77,7 +78,7 @@ module Hotel
       # date is w/i the reservation date_range (TRUE)
       if ((date <=> start_date) == 1) && ((end_date <=> date) == 1)
         return 1
-      # date is not w/i the reservation date_range (FALSE)
+      # date is NOT w/i the reservation date_range (FALSE)
       elsif ((date <=> start_date) == -1) || ((end_date <=> date) == -1)
         return -1
       # date is either equal to the start_date or to the end_date (TRUE)
@@ -88,30 +89,25 @@ module Hotel
 
 #---------------------------------------------------------------------#
 
-    def get_unreserved_rooms(date_range)
-      #TODO: FIGURE OUT HOW TO GET ROOM IDS THAT ARE NOT INCLUDED IN RESERVATIONS ARRAY
-      desired_start_date = date_range[:start_date]
-      desired_end_date = date_range[:end_date]
-      unreserved_rooms = []
-      reservations.each do |reservation|
-        reservation_start = reservation.start_date
-        reservation_end = reservation.end_date
-
-        # if desired_end_date <=
-
-
-        #compare desired_end_date with reservation
-          # compare_dates(reservation, desired_end_date) AND
-        #compare desired_start_date with reservation
-          # compare_dates(reservation, desired_start_date)
-        # if false AND false, then push room id of the reservation (reservation.room_id)
-
-        #push reservation.room_id into unreserved_rooms array
-      end
-      #iterate through rooms array and return array of rooms where is_available is true (call available_rooms)
-      #return unreserved_rooms + available rooms (get rid of duplicates and sort)
-      return unreserved_rooms
-    end
+    # def get_unreserved_rooms(date_range)
+    #   #TODO: FIGURE OUT HOW TO GET ROOM IDS THAT ARE NOT INCLUDED IN RESERVATIONS ARRAY
+    #   desired_start_date = date_range[:start_date]
+    #   desired_end_date = date_range[:end_date]
+    #   unreserved_rooms = []
+    #   reservations.each do |reservation|
+    #     reservation_start = reservation.start_date
+    #     reservation_end = reservation.end_date
+    #
+    #     if desired_end_date <= reservation_start || desired_start_date >= reservation_end
+    #       unreserved_rooms << reservation.room_id
+    #     end
+    #
+    #     #push reservation.room_id into unreserved_rooms array
+    #   end
+    #   #iterate through rooms array and return array of rooms where is_available is true (call available_rooms)
+    #   #return unreserved_rooms + available rooms (get rid of duplicates and sort)
+    #   return unreserved_rooms
+    # end
 
   end
 end

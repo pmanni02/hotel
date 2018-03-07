@@ -7,7 +7,7 @@ describe "Reservation class" do
       start_date: Date.new(2018, 03, 05),
       end_date: Date.new(2018, 03, 10)
     }
-    room = 1
+    room = Hotel::Room.new(1)
     @reservation = Hotel::Reservation.new(date_range, room)
   end
 
@@ -20,7 +20,7 @@ describe "Reservation class" do
       @reservation.start_date.must_be_kind_of Date
       @reservation.end_date.must_be_kind_of Date
       @reservation.cost.must_be_kind_of Integer
-      @reservation.room_id.must_be_kind_of Integer
+      @reservation.room.must_be_instance_of Hotel::Room
       # @reservation.reservation_id.must_be_kind_of Integer
     end
   end
@@ -35,7 +35,7 @@ describe "Reservation class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 05)
       }
-      room = 1
+      room = Hotel::Room.new(1)
       reservation = Hotel::Reservation.new(one_day, room)
       reservation.cost.must_equal 200
     end
