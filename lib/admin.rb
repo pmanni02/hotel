@@ -91,23 +91,23 @@ module Hotel
     def get_unreserved_rooms(date_range)
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
-      unreserved_rooms = []
+      unreserved_room_ids = []
       reservations.each do |reservation|
         reservation_start = reservation.start_date
         reservation_end = reservation.end_date
 
         if desired_end_date <= reservation_start || desired_start_date >= reservation_end
-          unreserved_rooms << reservation.room.room_id
+          unreserved_room_ids << reservation.room.room_id
         end
       end
 
       rooms.each do |room|
         if room.is_reserved == false
-          unreserved_rooms << room.room_id
+          unreserved_room_ids << room.room_id
         end
       end
 
-      return unreserved_rooms.sort.uniq
+      return unreserved_room_ids.sort.uniq
     end
 
   end
