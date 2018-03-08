@@ -1,5 +1,3 @@
-# require 'time'
-
 require 'simplecov'
 SimpleCov.start
 
