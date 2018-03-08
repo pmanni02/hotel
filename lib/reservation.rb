@@ -12,16 +12,16 @@ module Hotel
     end
 
     def calculate_cost
-      total_nights = (end_date - start_date).to_i
+      total_days = (end_date - start_date).to_i
 
-      if total_nights == 0
+      if total_days == 0
         raise StandardError.new("Start date cannot equal end date.")
-      elsif total_nights == 1
+      elsif total_days == 1
         cost = cost_per_night
       else
-        cost = (total_nights - 1) * cost_per_night
+        cost = (total_days - 1) * cost_per_night
       end
-      
+
       return cost
     end
 
