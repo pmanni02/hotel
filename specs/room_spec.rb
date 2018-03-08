@@ -1,9 +1,10 @@
 require_relative 'spec_helper'
 
-describe "Room class" do
+describe "Room Class" do
   before do
     id = 1
-    @room = Hotel::Room.new(id, false)
+    is_reserved = false
+    @room = Hotel::Room.new(id, is_reserved)
   end
 
   describe "Initializer" do
