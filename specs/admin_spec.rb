@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 require 'date'
 require 'pry'
 
-describe "Admin class" do
+describe "Admin Class" do
 
   before do
     @admin = Hotel::Admin.new
@@ -104,6 +104,11 @@ describe "Admin class" do
         start_date: Date.new(2018, 05, 05),
         end_date: Date.new(2018, 01, 01)
       }
+
+      @one_day = {
+        start_date: Date.new(2018, 05, 05),
+        end_date: Date.new(2018, 05, 05)
+      }
     end
 
     it "returns true for a valid date range" do
@@ -114,6 +119,11 @@ describe "Admin class" do
     it "returns false for an invalid date range" do
       reservation = @admin.check_date_range(@bad_date_range)
       reservation.must_equal false
+    end
+
+    it "returns true if start_date == end_date" do
+      reservation = @admin.check_date_range(@one_day)
+      reservation.must_equal true
     end
   end
 
@@ -129,7 +139,7 @@ describe "Admin class" do
       @admin.get_reservation_list(date).must_equal []
     end
 
-    it "returns correct array if date is end_date of a reservation" do
+    it "returns one reservation if date is end_date of a reservation" do
       date_range = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
@@ -138,11 +148,12 @@ describe "Admin class" do
       @admin.add_reservation(date_range, room_id)
       list = @admin.get_reservation_list(Date.new(2018, 03, 10))
 
+      list.length.must_equal 1
       list.first.start_date.must_equal Date.new(2018, 03, 05)
       list.last.end_date.must_equal Date.new(2018, 03, 10)
     end
 
-    it "returns correct array if date is start_date of a reservation" do
+    it "returns one reservation if date is start_date of a reservation" do
       date_range = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
@@ -151,11 +162,12 @@ describe "Admin class" do
       @admin.add_reservation(date_range, room_id)
       list = @admin.get_reservation_list(Date.new(2018, 03, 05))
 
+      list.length.must_equal 1
       list.first.start_date.must_equal Date.new(2018, 03, 05)
       list.last.end_date.must_equal Date.new(2018, 03, 10)
     end
 
-    it "returns correct array if date is in between start_date and end_date" do
+    it "returns one reservation if date is in between start_date and end_date" do
       date_range = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
@@ -164,6 +176,7 @@ describe "Admin class" do
       @admin.add_reservation(date_range, room_id)
       list = @admin.get_reservation_list(Date.new(2018, 03, 06))
 
+      list.length.must_equal 1
       list.first.start_date.must_equal Date.new(2018, 03, 05)
       list.last.end_date.must_equal Date.new(2018, 03, 10)
     end
@@ -228,16 +241,6 @@ describe "Admin class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-
-      @date_range2 = {
-        start_date: Date.new(2018, 03, 01),
-        end_date: Date.new(2018, 05, 20)
-      }
-
-      @date_range3 = {
-        start_date: Date.new(2018, 05, 19),
-        end_date: Date.new(2018, 05, 25)
-      }
     end
 
     it "returns an Array of Integers (Room Ids)" do
@@ -251,6 +254,7 @@ describe "Admin class" do
       @admin.num_rooms.times do |num|
         @admin.add_reservation(@date_range1, num + 1)
       end
+
       available_rooms = @admin.get_unreserved_rooms(@date_range1)
       available_rooms.must_equal []
     end

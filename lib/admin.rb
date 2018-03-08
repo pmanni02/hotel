@@ -27,6 +27,7 @@ module Hotel
       return rooms
     end
 
+    #TODO: Add check if id is within desired range
     def create_room_instance(id, is_reserved)
       if id.class == Integer
         return Hotel::Room.new(id, is_reserved)
@@ -39,12 +40,12 @@ module Hotel
 
     def add_reservation(date_range, room_id)
       if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
-        room = @rooms.select {|room| room.room_id == room_id}.first
-        room.is_reserved = true
-        new_reservation = Hotel::Reservation.new(date_range, room)
+        selected_room = @rooms.select {|room| room.room_id == room_id}.first
+        selected_room.is_reserved = true
+        new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
       else
-        raise StandardError.new("Date range is invalid")
+        raise StandardError.new("Date range OR room ID is invalid")
       end
     end
 
