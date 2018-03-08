@@ -1,8 +1,7 @@
 require_relative 'spec_helper'
 
-describe "Reservation class" do
+describe "Reservation Class" do
   before do
-    # cost = 800
     date_range = {
       start_date: Date.new(2018, 03, 05),
       end_date: Date.new(2018, 03, 10)
@@ -22,7 +21,6 @@ describe "Reservation class" do
       @reservation.end_date.must_be_kind_of Date
       @reservation.cost.must_be_kind_of Integer
       @reservation.room.must_be_instance_of Hotel::Room
-      # @reservation.reservation_id.must_be_kind_of Integer
     end
   end
 
@@ -31,20 +29,27 @@ describe "Reservation class" do
       @reservation.cost.must_equal 800
     end
 
-    it "accurately calculates cost for one day" do
-      one_day = {
+    it "raises error if start_date == end_date" do
+      zero_days = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 05)
       }
-      room = Hotel::Room.new(1, false)
+      room = Hotel::Room.new(1, true)
+
+      proc {
+        Hotel::Reservation.new(one_day, room)
+      }.must_raise StandardError
+    end
+
+    it "accurately calculates cost for one day" do
+      one_day = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 06)
+      }
+      room = Hotel::Room.new(1, true)
       reservation = Hotel::Reservation.new(one_day, room)
       reservation.cost.must_equal 200
     end
   end
 
-  # describe "#get_id" do
-  #   it "returns an Integer" do
-  #     @reservation.get_id.must_be_kind_of Integer
-  #   end
-  # end
 end
