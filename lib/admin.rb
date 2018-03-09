@@ -61,8 +61,7 @@ module Hotel
 
     def add_reservation(date_range, room_id)
       if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
-        #TODO: user get_room(id) method for selected_room
-        selected_room = @rooms.select {|room| room.room_id == room_id}.first
+        selected_room = get_room(room_id)
         selected_room.is_reserved = true
         selected_room.is_in_block = true
 
@@ -155,18 +154,18 @@ module Hotel
     # => call check_rooms(array of rooms from block)
     # end
 
+
+
+    private
+
     def cost_per_night(num_rooms)
       return base_rate - (base_rate*(discount_rate * num_rooms))
     end
 
-    private
-
-
-
     #TODO: add PRIVATE get_room(id) method
-    # def get_room(id)
-    # => returns Room instance
-    # end
+    def get_room(id)
+      return rooms.select {|room| room.room_id == id}.first
+    end
 
     #TODO: add PRIVATE get_block(id) method
     # def get_block(room_id)
