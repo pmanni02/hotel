@@ -65,10 +65,11 @@ module Hotel
         selected_room = @rooms.select {|room| room.room_id == room_id}.first
         selected_room.is_reserved = true
         selected_room.is_in_block = true
-        #TODO: add cost cost_per_night parameter below
-        cost = cost_per_night(4)
-        new_reservation = Hotel::Reservation.new(date_range, selected_room, cost_per_night: cost)
-        # new_reservation = Hotel::Reservation.new(date_range, selected_room)
+
+        # num_rooms = 4
+        # cost = cost_per_night(num_rooms)
+        # new_reservation = Hotel::Reservation.new(date_range, selected_room, cost_per_night: cost)
+        new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
       else
         raise StandardError.new("Date range OR room ID is invalid")

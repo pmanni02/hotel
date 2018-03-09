@@ -3,7 +3,6 @@ require 'date'
 require 'pry'
 
 describe "Admin Class" do
-
   before do
     @admin = Hotel::Admin.new
   end
@@ -17,6 +16,8 @@ describe "Admin Class" do
       @admin.reservations.must_be_kind_of Array
       @admin.num_rooms.must_be_kind_of Integer
       @admin.rooms.must_be_kind_of Array
+      @admin.base_rate.must_be_kind_of Integer
+      @admin.discount_rate.must_be_kind_of Float
     end
   end
 
