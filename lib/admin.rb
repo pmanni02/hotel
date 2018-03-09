@@ -50,7 +50,7 @@ module Hotel
       unreserved_room_ids = get_unreserved_rooms(date_range)
       if unreserved_room_ids.length >= num_rooms
 
-        room_objs = get_room_objs(unreserved_room_ids)
+        room_objs = get_room_objs(unreserved_room_ids.shift(num_rooms))
         room_objs.each do |room|
           room.is_in_block = true
         end
@@ -176,8 +176,6 @@ module Hotel
     # => call check_rooms(array of rooms from block)
     # end
 
-
-
     private
 
     def cost_per_night(num_rooms)
@@ -192,7 +190,7 @@ module Hotel
     def get_room_objs(room_ids)
       room_objs = []
       i = 0
-      while i < num_rooms
+      while i < room_ids.length
         room_objs << get_room(room_ids[i])
         i += 1
       end

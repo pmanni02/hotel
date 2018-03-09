@@ -93,6 +93,7 @@ describe "Admin Class" do
       block[:start_date].must_equal Date.new(2018, 03, 05)
       block[:end_date].must_equal Date.new(2018, 03, 10)
       block[:rooms].must_be_kind_of Array
+      block[:rooms].length.must_equal 5
       block[:room_rate].must_equal 150
     end
 
@@ -388,10 +389,12 @@ describe "Admin Class" do
     end
 
     it "does not return rooms within a block" do
-      skip
-      # make a block
-      # call get_unreserved_rooms
-      # unreserved_room_ids should not include any ids in block
+      num_rooms = 4
+      block = @admin.make_block(@date_range1, num_rooms)
+      unreserved_rooms_ids = @admin.get_unreserved_rooms(@date_range1)
+      rooms = block[:rooms]
+      
+      rooms.any?{|room| unreserved_rooms_ids.include?(room.room_id)}.must_equal false
     end
 
     it "returns rooms within a block if start_date == end_date of block" do
