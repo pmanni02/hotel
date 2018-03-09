@@ -354,8 +354,19 @@ describe "Admin Class" do
     end
   end
 
+  describe "#check_reservations" do
+    it "returns an array" do
+      date_range = {
+        start_date: Date.new(2018, 03, 5),
+        end_date: Date.new(2018, 03, 10)
+      }
+      reservations = @admin.reservations
+      @admin.check_reservations(date_range, reservations).must_be_kind_of Array
+    end
+  end
+
   describe "#check_rooms" do
-    it "returns array" do
+    it "returns an array" do
       rooms = @admin.rooms
       @admin.check_rooms(rooms).must_be_kind_of Array
     end

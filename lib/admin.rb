@@ -113,13 +113,21 @@ module Hotel
     end
 
 #---------------------------------------------------------------------#
+
     #NOTE: will not return rooms in blocks.
     def get_unreserved_rooms(date_range)
+      unreserved_room_ids = check_reservations(date_range, reservations) + check_rooms(rooms)
+
+      return unreserved_room_ids.sort.uniq
+    end
+
+#---------------------------------------------------------------------#
+
+    def check_reservations(date_range, array_of_reservations)
+      #TODO: add if statement that checks if reservation.room.is_in_block is false (IS THIS REDUNDANT!!)
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
 
-      #TODO: make each do block below a separate helper method -> check_reservations(date_range). returns unreserved_room_ids
-      #TODO: add if statement that checks if reservation.room.is_in_block is false (IS THIS REDUNDANT!!)
       unreserved_room_ids = []
       reservations.each do |reservation|
         reservation_start = reservation.start_date
@@ -130,16 +138,8 @@ module Hotel
         end
       end
 
-      unreserved_room_ids += check_rooms(rooms)
-
-      return unreserved_room_ids.sort.uniq
+      return unreserved_room_ids
     end
-
-#---------------------------------------------------------------------#
-
-    # def check_reservations(array_of_reservations)
-    #
-    # end
 
     #TODO: raise error if parameter is not an Array
     def check_rooms(array_of_rooms)
