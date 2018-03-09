@@ -60,6 +60,7 @@ module Hotel
         #TODO: user get_room(id) method for selected_room
         selected_room = @rooms.select {|room| room.room_id == room_id}.first
         selected_room.is_reserved = true
+        selected_room.is_in_block = true
         #TODO: add cost cost_per_night parameter below
         new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
@@ -112,7 +113,7 @@ module Hotel
       desired_end_date = date_range[:end_date]
 
       #TODO: make each do block below a separate helper method -> check_reservations(date_range). returns unreserved_room_ids
-      #TODO: add if statement that checks if reservation.room.is_in_block is false
+      #TODO: add if statement that checks if reservation.room.is_in_block is false (IS THIS REDUNDANT!!)
       unreserved_room_ids = []
       reservations.each do |reservation|
         reservation_start = reservation.start_date
@@ -125,8 +126,7 @@ module Hotel
 
       #TODO: make separate helper method -> check_rooms(array of rooms). returns array of unreserved_room_ids
       rooms.each do |room|
-        #TODO: change below if statement to room.is_reserved == false && is_in_block == false
-        if room.is_reserved == false
+        if room.is_reserved == false && room.is_in_block == false
           unreserved_room_ids << room.room_id
         end
       end
