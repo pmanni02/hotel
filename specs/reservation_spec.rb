@@ -51,6 +51,18 @@ describe "Reservation Class" do
       reservation = Hotel::Reservation.new(one_day, room)
       reservation.total_cost.must_equal 200
     end
+
+    it "accurately calculates cost for room in a block with 4 rooms" do
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+      # calculate cost using cost_per_night function in admin
+      room = Hotel::Room.new(1, true, is_in_block: true)
+      cost = 160 #cost_per_night for 4 rooms
+      reservation = Hotel::Reservation.new(date_range, room, cost_per_night: cost)
+      reservation.total_cost.must_equal 640
+    end
   end
 
 end
