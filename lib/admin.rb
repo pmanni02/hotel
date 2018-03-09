@@ -19,6 +19,7 @@ module Hotel
     def create_rooms_array
       rooms = []
       is_reserved = false
+      # is_in_block = false
       num_rooms.times do |i|
         id = i + 1
         rooms << create_room_instance(id, is_reserved)

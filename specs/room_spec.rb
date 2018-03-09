@@ -4,7 +4,8 @@ describe "Room Class" do
   before do
     id = 1
     is_reserved = false
-    @room = Hotel::Room.new(id, is_reserved)
+    @room = Hotel::Room.new(id, is_reserved, is_in_block: false)
+    # @room = Hotel::Room.new(id, is_reserved)
   end
 
   describe "Initializer" do
@@ -15,7 +16,7 @@ describe "Room Class" do
     it "creates initial data structures" do
       @room.is_reserved.must_equal false
       @room.room_id.must_be_kind_of Integer
-      #@room.is_in_block.must_equal false
+      @room.is_in_block.must_equal false
     end
   end
 end
