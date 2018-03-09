@@ -337,6 +337,21 @@ describe "Admin Class" do
       available_rooms.must_equal (2..20).to_a
     end
 
+    it "does not return rooms within a block" do
+      skip
+      # make a block
+      # call get_unreserved_rooms
+      # unreserved_room_ids should not include any ids in block
+    end
+
+    it "returns rooms within a block if start_date == end_date of block" do
+      skip
+      # make_block
+      # make date range that starts the same day block ends
+      # call get_unreserved_rooms(date_range)
+      # unreserved_room_ids should into include ids in block
+    end
+
   end
 
 end

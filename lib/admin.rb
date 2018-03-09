@@ -6,13 +6,12 @@ require 'date'
 module Hotel
   class Admin
 
-    attr_reader :reservations, :num_rooms, :rooms, :reservation_id_tracker
+    attr_reader :reservations, :num_rooms, :rooms
 
     def initialize
       @reservations = []
       @num_rooms = 20
       @rooms = create_rooms_array
-      # @reservation_id_tracker = 0
     end
 
 #---------------------------------------------------------------------#
