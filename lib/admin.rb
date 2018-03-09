@@ -7,12 +7,11 @@ module Hotel
 
   class Admin
 
-
-
-    attr_reader :reservations, :num_rooms, :rooms, :base_rate, :discount_rate
+    attr_reader :reservations, :num_rooms, :rooms, :base_rate, :discount_rate, :blocks
 
     def initialize
       @reservations = []
+      @blocks = []
       @num_rooms = 20
       @rooms = create_rooms_array
       @base_rate = 200
@@ -152,6 +151,7 @@ module Hotel
       return unreserved_room_ids
     end
 
+    #TODO: add check_block(array_of_blocks)
     # def check_block(array_of_blocks)
     # => call check_rooms(array of rooms from block)
     # end

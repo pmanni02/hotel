@@ -14,6 +14,7 @@ describe "Admin Class" do
 
     it "creates initial data structures" do
       @admin.reservations.must_be_kind_of Array
+      @admin.blocks.must_be_kind_of Array
       @admin.num_rooms.must_be_kind_of Integer
       @admin.rooms.must_be_kind_of Array
       @admin.base_rate.must_be_kind_of Integer
