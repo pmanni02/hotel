@@ -352,7 +352,13 @@ describe "Admin Class" do
       # call get_unreserved_rooms(date_range)
       # unreserved_room_ids should into include ids in block
     end
+  end
 
+  describe "#check_rooms" do
+    it "returns array" do
+      rooms = @admin.rooms
+      @admin.check_rooms(rooms).must_be_kind_of Array
+    end
   end
 
 end
