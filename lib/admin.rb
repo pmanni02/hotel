@@ -4,14 +4,19 @@ require_relative 'room'
 require 'date'
 
 module Hotel
+
   class Admin
 
-    attr_reader :reservations, :num_rooms, :rooms
+
+
+    attr_reader :reservations, :num_rooms, :rooms, :base_rate, :discount_rate
 
     def initialize
       @reservations = []
       @num_rooms = 20
       @rooms = create_rooms_array
+      @base_rate = 200
+      @discount_rate = 0.05
     end
 
 #---------------------------------------------------------------------#
@@ -37,7 +42,6 @@ module Hotel
     end
 
 #---------------------------------------------------------------------#
-    #TODO: add calculate_room_rate(# of rooms)
 
     #TODO: add #make_block(date_range {}, # of rooms)
     # def make_block(date_range, # of rooms)
@@ -62,7 +66,9 @@ module Hotel
         selected_room.is_reserved = true
         selected_room.is_in_block = true
         #TODO: add cost cost_per_night parameter below
-        new_reservation = Hotel::Reservation.new(date_range, selected_room)
+        cost = cost_per_night(4)
+        new_reservation = Hotel::Reservation.new(date_range, selected_room, cost_per_night: cost)
+        # new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
       else
         raise StandardError.new("Date range OR room ID is invalid")
@@ -148,7 +154,13 @@ module Hotel
     # => call check_rooms(array of rooms from block)
     # end
 
+    def cost_per_night(num_rooms)
+      return base_rate - (base_rate*(discount_rate * num_rooms))
+    end
+
     private
+
+
 
     #TODO: add PRIVATE get_room(id) method
     # def get_room(id)
