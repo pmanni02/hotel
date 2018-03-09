@@ -29,7 +29,7 @@ describe "Reservation Class" do
       @reservation.cost.must_equal 800
     end
 
-    it "raises error if start_date == end_date" do
+    it "raises StandardError if start_date == end_date" do
       zero_days = {
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 05)
