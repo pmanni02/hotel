@@ -43,12 +43,35 @@ module Hotel
 #---------------------------------------------------------------------#
 
     #TODO: add #make_block(date_range {}, # of rooms)
-    # def make_block(date_range, # of rooms)
-    #   call get_unreserved_rooms(date_range)
-    #   check if #rooms if available
-    #   calculate room_rate(# of rooms)
-    #   make block hash and push into block array (@blocks)
-    # end
+    def make_block(date_range, num_rooms)
+      if num_rooms < 2
+        raise StandardError.new("Blocks must contain > 1 room")
+      end
+
+      unreserved_room_ids = get_unreserved_rooms(date_range)
+      if unreserved_room_ids.length >= num_rooms
+        room_objs = []
+        i = 0
+        while i < num_rooms
+          room =  get_room(unreserved_room_ids[i])
+          room.is_in_block = true
+          room_objs << room
+          i += 1
+        end
+
+        block = {
+          start_date: date_range[:start_date],
+          end_date: date_range[:end_date],
+          rooms: room_objs,
+          room_rate: cost_per_night(num_rooms)
+        }
+
+        blocks << block
+        return block
+      else
+        return nil
+      end
+    end
 
     #TODO: add #add_reservation_in_block(room_id)
     # def add_reservation_in_block(room_id)

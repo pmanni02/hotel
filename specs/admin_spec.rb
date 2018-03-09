@@ -57,6 +57,53 @@ describe "Admin Class" do
     end
   end
 
+  describe "#make_block" do
+    before do
+      @date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+    end
+
+    it "returns a hash" do
+      num_rooms = 2
+      block = @admin.make_block(@date_range, num_rooms)
+      block.must_be_kind_of Hash
+    end
+
+    it "raises a StandardError if num_rooms < 2" do
+      num_rooms = 1
+      proc {
+        @admin.make_block(@date_range, num_rooms)
+      }.must_raise StandardError
+    end
+
+    it "returns nil if there are not enough rooms available" do
+      @admin.num_rooms.times do |num|
+        @admin.add_reservation(@date_range, num + 1)
+      end
+      num_rooms = 2
+      block = @admin.make_block(@date_range, num_rooms)
+      block.must_equal nil
+    end
+
+    it "returns the correct block" do
+      num_rooms = 5
+      block = @admin.make_block(@date_range, num_rooms)
+      block[:start_date].must_equal Date.new(2018, 03, 05)
+      block[:end_date].must_equal Date.new(2018, 03, 10)
+      block[:rooms].must_be_kind_of Array
+      block[:room_rate].must_equal 150
+    end
+
+    it "returns a block with an Array of Room objs" do
+      num_rooms = 5
+      block = @admin.make_block(@date_range, num_rooms)
+      rooms = block[:rooms]
+      rooms.all? {|room| room.must_be_instance_of Hotel::Room}
+    end
+  end
+
   describe "#add_reservation" do
     before do
       @date_range = {
