@@ -1,15 +1,14 @@
 module Hotel
   class Reservation
 
-    attr_reader :start_date, :end_date, :cost_per_night, :cost, :room
+    attr_reader :start_date, :end_date, :cost_per_night, :total_cost, :room
 
-    #TODO: add cost per night to parameters and attr_reader. default cost is 200.
-    def initialize(date_range, room)
+    def initialize(date_range, room, cost_per_night: 200)
       @start_date = date_range[:start_date]
       @end_date = date_range[:end_date]
-      # @cost_per_night = cost_per_night
-      @cost_per_night = 200
-      @cost = calculate_cost
+      # @cost_per_night = 200
+      @cost_per_night = cost_per_night
+      @total_cost = calculate_cost
       @room = room
     end
 

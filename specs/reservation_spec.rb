@@ -19,14 +19,15 @@ describe "Reservation Class" do
     it "correctly initializes instance variables" do
       @reservation.start_date.must_be_kind_of Date
       @reservation.end_date.must_be_kind_of Date
-      @reservation.cost.must_be_kind_of Integer
+      @reservation.cost_per_night.must_be_kind_of Integer
+      @reservation.total_cost.must_be_kind_of Integer
       @reservation.room.must_be_instance_of Hotel::Room
     end
   end
 
   describe "#calculate_cost" do
     it "accurately calculates cost" do
-      @reservation.cost.must_equal 800
+      @reservation.total_cost.must_equal 800
     end
 
     it "raises StandardError if start_date == end_date" do
@@ -48,7 +49,7 @@ describe "Reservation Class" do
       }
       room = Hotel::Room.new(1, true)
       reservation = Hotel::Reservation.new(one_day, room)
-      reservation.cost.must_equal 200
+      reservation.total_cost.must_equal 200
     end
   end
 
