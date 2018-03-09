@@ -42,7 +42,6 @@ module Hotel
 
 #---------------------------------------------------------------------#
 
-    #TODO: add #make_block(date_range {}, # of rooms)
     def make_block(date_range, num_rooms)
       if num_rooms < 2
         raise StandardError.new("Blocks must contain > 1 room")
@@ -50,13 +49,10 @@ module Hotel
 
       unreserved_room_ids = get_unreserved_rooms(date_range)
       if unreserved_room_ids.length >= num_rooms
-        room_objs = []
-        i = 0
-        while i < num_rooms
-          room =  get_room(unreserved_room_ids[i])
+
+        room_objs = get_room_objs(unreserved_room_ids)
+        room_objs.each do |room|
           room.is_in_block = true
-          room_objs << room
-          i += 1
         end
 
         block = {
@@ -72,6 +68,7 @@ module Hotel
         return nil
       end
     end
+
 
     #TODO: add #add_reservation_in_block(room_id)
     # def add_reservation_in_block(room_id)
@@ -190,6 +187,16 @@ module Hotel
     #TODO: add PRIVATE get_room(id) method
     def get_room(id)
       return rooms.select {|room| room.room_id == id}.first
+    end
+
+    def get_room_objs(room_ids)
+      room_objs = []
+      i = 0
+      while i < num_rooms
+        room_objs << get_room(room_ids[i])
+        i += 1
+      end
+      return room_objs
     end
 
     #TODO: add PRIVATE get_block(id) method

@@ -101,6 +101,7 @@ describe "Admin Class" do
       block = @admin.make_block(@date_range, num_rooms)
       rooms = block[:rooms]
       rooms.all? {|room| room.must_be_instance_of Hotel::Room}
+      rooms.all? {|room| room.is_in_block.must_equal true}
     end
   end
 
