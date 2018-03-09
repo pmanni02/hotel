@@ -7,6 +7,7 @@ module Hotel
     def initialize(id, is_reserved)
       @room_id = id
       @is_reserved = is_reserved
+      #TODO: add @is_in_block 
     end
 
   end

@@ -37,11 +37,30 @@ module Hotel
     end
 
 #---------------------------------------------------------------------#
+    #TODO: add calculate_room_rate(# of rooms)
+
+    #TODO: add #make_block(date_range {}, # of rooms)
+    # def make_block(date_range, # of rooms)
+    #   call get_unreserved_rooms(date_range)
+    #   check if #rooms if available
+    #   calculate room_rate(# of rooms)
+    #   make block hash and push into block array (@blocks)
+    # end
+
+    #TODO: add #add_reservation_in_block(room_id)
+    # def add_reservation_in_block(room_id)
+    #   check if room is in block
+    #   if T, get date range and cost/night from block hash
+    #   call add_reservation(date_range, room_id)
+    #     Hotel::Reservation.new(date_range, room, cost/night)
+    # end
 
     def add_reservation(date_range, room_id)
       if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
+        #TODO: user get_room(id) method for selected_room
         selected_room = @rooms.select {|room| room.room_id == room_id}.first
         selected_room.is_reserved = true
+        #TODO: add cost cost_per_night parameter below
         new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
       else
@@ -87,10 +106,13 @@ module Hotel
     end
 
 #---------------------------------------------------------------------#
-
+    #NOTE: will not return rooms in blocks.
     def get_unreserved_rooms(date_range)
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
+
+      #TODO: make each do block below a separate helper method -> check_reservations(date_range). returns unreserved_room_ids
+      #TODO: add if statement that checks if reservation.room.is_in_block is false
       unreserved_room_ids = []
       reservations.each do |reservation|
         reservation_start = reservation.start_date
@@ -101,7 +123,9 @@ module Hotel
         end
       end
 
+      #TODO: make separate helper method -> check_rooms(array of rooms). returns array of unreserved_room_ids
       rooms.each do |room|
+        #TODO: change below if statement to room.is_reserved == false && is_in_block == false
         if room.is_reserved == false
           unreserved_room_ids << room.room_id
         end
@@ -109,6 +133,32 @@ module Hotel
 
       return unreserved_room_ids.sort.uniq
     end
+
+#---------------------------------------------------------------------#
+
+    # def check_reservations(array_of_reservations)
+    #
+    # end
+
+    # def check_rooms(array_of_rooms)
+    #
+    # end
+
+    # def check_block(array_of_blocks)
+    # => call check_rooms(array of rooms from block)
+    # end
+
+    private
+
+    #TODO: add PRIVATE get_room(id) method
+    # def get_room(id)
+    # => returns Room instance
+    # end
+
+    #TODO: add PRIVATE get_block(id) method
+    # def get_block(room_id)
+    # => returns block hash
+    # end
 
   end
 end
