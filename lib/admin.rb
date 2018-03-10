@@ -176,13 +176,28 @@ module Hotel
     # => call check_rooms(array of rooms from block)
     # end
 
+    #TODO: add PRIVATE get_block(id) method
+    def get_block(room_id)
+      block = {}
+
+      blocks.each do |b|
+        rooms = b[:rooms]
+        rooms.each do |r|
+          if r.room_id == room_id
+            block = b
+            break
+          end
+        end
+      end
+      return block
+    end
+
     private
 
     def cost_per_night(num_rooms)
       return base_rate - (base_rate*(discount_rate * num_rooms))
     end
 
-    #TODO: add PRIVATE get_room(id) method
     def get_room(id)
       return rooms.select {|room| room.room_id == id}.first
     end
@@ -197,10 +212,7 @@ module Hotel
       return room_objs
     end
 
-    #TODO: add PRIVATE get_block(id) method
-    # def get_block(room_id)
-    # => returns block hash
-    # end
+
 
   end
 end

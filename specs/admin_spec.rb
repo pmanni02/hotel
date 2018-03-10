@@ -393,7 +393,7 @@ describe "Admin Class" do
       block = @admin.make_block(@date_range1, num_rooms)
       unreserved_rooms_ids = @admin.get_unreserved_rooms(@date_range1)
       rooms = block[:rooms]
-      
+
       rooms.any?{|room| unreserved_rooms_ids.include?(room.room_id)}.must_equal false
     end
 
@@ -421,6 +421,27 @@ describe "Admin Class" do
     it "returns an array" do
       rooms = @admin.rooms
       @admin.check_rooms(rooms).must_be_kind_of Array
+    end
+  end
+
+  describe "#get_block" do
+    before do
+      date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+      num_rooms = 3
+      @block = @admin.make_block(date_range, num_rooms)
+    end
+    
+    it "returns a block for rooms in block" do
+      @admin.get_block(1).must_equal @block
+      @admin.get_block(2).must_equal @block
+      @admin.get_block(3).must_equal @block
+    end
+
+    it "returns empty {} if id is not in block" do
+      @admin.get_block(4).wont_equal @block
     end
   end
 
