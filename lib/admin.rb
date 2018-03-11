@@ -189,10 +189,18 @@ module Hotel
       return unreserved_room_ids
     end
 
-    #TODO: add check_block(array_of_blocks)
-    # def check_block(array_of_blocks)
-    # => call check_rooms(array of rooms from block)
-    # end
+    #TODO: add check_block(block)
+    def check_block(block)
+      unreserved_rooms = []
+      rooms = block[:rooms]
+      rooms.each do |room|
+        if room.is_reserved == false
+          unreserved_rooms << room.room_id
+        end
+      end
+      return unreserved_rooms
+    # check_rooms(array of rooms from block)
+    end
 
     #TODO: add PRIVATE get_block(id) method
     def get_block(room_id)

@@ -440,9 +440,19 @@ describe "Admin Class" do
     it "returns rooms within a block if start_date == end_date of block" do
       skip
       # make_block
+      num_rooms = 2
+      block = @admin.make_block(@date_range1, num_rooms)
       # make date range that starts the same day block ends
+      new_date_range = {
+        start_date: Date.new(2018, 03, 10),
+        end_date: Date.new(2018, 03, 12)
+      }
       # call get_unreserved_rooms(date_range)
+      unreserved_room_ids = @admin.get_unreserved_rooms(new_date_range)
+      binding.pry
       # unreserved_room_ids should into include ids in block
+      unreserved_room_ids.include?(1).must_equal true
+      unreserved_room_ids.include?(2).must_equal true
     end
   end
 
@@ -461,6 +471,32 @@ describe "Admin Class" do
     it "returns an array" do
       rooms = @admin.rooms
       @admin.check_rooms(rooms).must_be_kind_of Array
+    end
+  end
+
+  describe "#check_block(block)" do
+    before do
+      @date_range = {
+        start_date: Date.new(2018, 03, 5),
+        end_date: Date.new(2018, 03, 10)
+      }
+    end
+
+    it "returns non-empty array if there are available rooms" do
+      num_rooms = 2
+      block = @admin.make_block(@date_range, num_rooms)
+      @admin.check_block(block).must_equal [1,2]
+    end
+
+    it "returns empty array if there are no rooms available" do
+      num_rooms = 2
+      block = @admin.make_block(@date_range, num_rooms)
+      rooms = block[:rooms]
+      rooms.each do |room|
+        id = room.room_id
+        @admin.add_reservation_in_block(id)
+      end
+      @admin.check_block(block).must_equal []
     end
   end
 
