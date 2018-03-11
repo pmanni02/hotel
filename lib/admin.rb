@@ -42,8 +42,8 @@ module Hotel
 #---------------------------------------------------------------------#
 
     def make_block(date_range, num_rooms)
-      if num_rooms < 2
-        raise StandardError.new("Blocks must contain > 1 room")
+      if num_rooms < 2 || num_rooms > 5
+        raise StandardError.new("Blocks can only contain 2-5 rooms")
       end
 
       unreserved_room_ids = get_unreserved_rooms(date_range)

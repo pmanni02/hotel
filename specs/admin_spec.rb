@@ -78,6 +78,13 @@ describe "Admin Class" do
       }.must_raise StandardError
     end
 
+    it "raises a StandardError if num_rooms > 5" do
+      num_rooms = 6
+      proc {
+        @admin.make_block(@date_range, num_rooms)
+      }.must_raise StandardError
+    end
+
     it "returns nil if there are not enough rooms available" do
       @admin.num_rooms.times do |num|
         @admin.add_reservation(@date_range, num + 1)
