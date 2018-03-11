@@ -106,6 +106,46 @@ describe "Admin Class" do
     end
   end
 
+  describe "#add_reservation_in_block" do
+    before do
+      @date_range = {
+        start_date: Date.new(2018, 03, 05),
+        end_date: Date.new(2018, 03, 10)
+      }
+    end
+
+    it "raises a StandardError if room with room_id is not in a block" do
+      room_id = 4
+      @admin.add_reservation(@date_range, room_id)
+      proc {
+        @admin.add_reservation_in_block(room_id)
+      }.must_raise StandardError
+    end
+
+    it "raises a ArgumentError if room_id is not valid integer" do
+      room_id = "4"
+      room_id2 = 55
+      proc {
+        @admin.add_reservation_in_block(room_id)
+        @admin.add_reservation_in_block(room_id2)
+      }.must_raise ArgumentError
+    end
+
+    it "successfully creates new reservation for valid room in block" do
+      num_rooms = 2
+      block = @admin.make_block(@date_range, num_rooms)
+      rooms = block[:rooms]
+      first_room = rooms.first
+
+      first_room.is_reserved.must_equal false
+      @admin.add_reservation_in_block(1)
+      rooms = block[:rooms]
+      rooms.first.is_in_block.must_equal true
+      rooms.first.is_reserved.must_equal true
+    end
+
+  end
+
   describe "#add_reservation" do
     before do
       @date_range = {
@@ -433,7 +473,7 @@ describe "Admin Class" do
       num_rooms = 3
       @block = @admin.make_block(date_range, num_rooms)
     end
-    
+
     it "returns a block for rooms in block" do
       @admin.get_block(1).must_equal @block
       @admin.get_block(2).must_equal @block

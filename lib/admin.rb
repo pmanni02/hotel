@@ -71,18 +71,36 @@ module Hotel
 
 
     #TODO: add #add_reservation_in_block(room_id)
-    # def add_reservation_in_block(room_id)
+    def add_reservation_in_block(room_id)
+
+      if room_id.class != Integer || room_id <= 0 || room_id > num_rooms
+        raise ArgumentError.new("Invalid room ID")
+      end
     #   check if room is in block
-    #   if T, get date range and cost/night from block hash
-    #   call add_reservation(date_range, room_id)
-    #     Hotel::Reservation.new(date_range, room, cost/night)
-    # end
+      block = get_block(room_id)
+      if block != {}
+        #get date range
+        date_range = {}
+        date_range[:start_date] = block[:start_date]
+        date_range[:end_date] = block[:end_date]
+        room = get_room(room_id)
+        room.is_reserved = true
+        cost = block[:room_rate]
+        # add_reservation(date_range, room_id)
+        # create reservation here
+        new_reservation = Hotel::Reservation.new(date_range, room, cost_per_night: cost)
+        reservations << new_reservation
+      else
+        raise StandardError.new("That room is not in a block.")
+      end
+
+    end
 
     def add_reservation(date_range, room_id)
       if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
         selected_room = get_room(room_id)
         selected_room.is_reserved = true
-        selected_room.is_in_block = true
+        # selected_room.is_in_block = true
 
         # num_rooms = 4
         # cost = cost_per_night(num_rooms)
@@ -211,8 +229,6 @@ module Hotel
       end
       return room_objs
     end
-
-
 
   end
 end
