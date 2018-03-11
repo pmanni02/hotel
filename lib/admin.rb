@@ -23,7 +23,6 @@ module Hotel
     def create_rooms_array
       rooms = []
       is_reserved = false
-      # is_in_block = false
       num_rooms.times do |i|
         id = i + 1
         rooms << create_room_instance(id, is_reserved)
@@ -69,7 +68,6 @@ module Hotel
       end
     end
 
-
     #TODO: add #add_reservation_in_block(room_id)
     def add_reservation_in_block(room_id)
 
@@ -86,8 +84,7 @@ module Hotel
         room = get_room(room_id)
         room.is_reserved = true
         cost = block[:room_rate]
-        # add_reservation(date_range, room_id)
-        # create reservation here
+
         new_reservation = Hotel::Reservation.new(date_range, room, cost_per_night: cost)
         reservations << new_reservation
       else
@@ -100,11 +97,6 @@ module Hotel
       if check_date_range(date_range) && get_unreserved_rooms(date_range).include?(room_id)
         selected_room = get_room(room_id)
         selected_room.is_reserved = true
-        # selected_room.is_in_block = true
-
-        # num_rooms = 4
-        # cost = cost_per_night(num_rooms)
-        # new_reservation = Hotel::Reservation.new(date_range, selected_room, cost_per_night: cost)
         new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
       else
@@ -158,14 +150,13 @@ module Hotel
       blocks.each do |block|
         unreserved_room_ids += check_block(block)
       end
-      
+
       return unreserved_room_ids.sort.uniq
     end
 
 #---------------------------------------------------------------------#
 
     def check_reservations(date_range, array_of_reservations)
-      #TODO: add if statement that checks if reservation.room.is_in_block is false (IS THIS REDUNDANT!!)
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
 
@@ -186,7 +177,6 @@ module Hotel
     def check_rooms(array_of_rooms)
       unreserved_room_ids = []
       array_of_rooms.each do |room|
-        # if room.is_reserved == false && room.is_in_block == false
         if room.is_reserved == false
           unreserved_room_ids << room.room_id
         end
@@ -194,20 +184,11 @@ module Hotel
       return unreserved_room_ids
     end
 
-    #TODO: add check_block(block)
     def check_block(block)
-      unreserved_rooms = []
       rooms = block[:rooms]
-      rooms.each do |room|
-        if room.is_reserved == false
-          unreserved_rooms << room.room_id
-        end
-      end
-      return unreserved_rooms
-    # check_rooms(array of rooms from block)
+      return check_rooms(rooms)
     end
 
-    #TODO: add PRIVATE get_block(id) method
     def get_block(room_id)
       block = {}
 
