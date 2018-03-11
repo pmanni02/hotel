@@ -155,6 +155,10 @@ module Hotel
     def get_unreserved_rooms(date_range)
       unreserved_room_ids = check_reservations(date_range, reservations) + check_rooms(rooms)
 
+      blocks.each do |block|
+        unreserved_room_ids += check_block(block)
+      end
+      
       return unreserved_room_ids.sort.uniq
     end
 
@@ -182,7 +186,8 @@ module Hotel
     def check_rooms(array_of_rooms)
       unreserved_room_ids = []
       array_of_rooms.each do |room|
-        if room.is_reserved == false && room.is_in_block == false
+        # if room.is_reserved == false && room.is_in_block == false
+        if room.is_reserved == false
           unreserved_room_ids << room.room_id
         end
       end
