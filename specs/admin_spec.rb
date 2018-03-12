@@ -438,25 +438,32 @@ describe "Admin Class" do
     it "does not return rooms within a block" do
       num_rooms = 4
       block = @admin.make_block(@date_range1, num_rooms)
-      unreserved_rooms_ids = @admin.get_unreserved_rooms(@date_range1)
+
+      unreserved_room_ids = @admin.get_unreserved_rooms(@date_range1)
       rooms = block[:rooms]
       block_room_ids = rooms.map {|room| room.room_id}
 
-      unreserved_rooms_ids.wont_include block_room_ids
+      unreserved_room_ids.each do |id|
+        block_room_ids.include?(id).must_equal false
+      end
     end
 
     it "returns rooms within a block if start_date == end_date of block" do
       num_rooms = 2
-      @admin.make_block(@date_range1, num_rooms)
-
-      new_date_range = {
-        start_date: Date.new(2018, 03, 10),
+      date_range = {
+        start_date: Date.new(2018, 03, 4),
         end_date: Date.new(2018, 03, 12)
       }
-      unreserved_room_ids = @admin.get_unreserved_rooms(new_date_range)
+      block = @admin.make_block(date_range, num_rooms)
 
-      unreserved_room_ids.include?(1).must_equal true
-      unreserved_room_ids.include?(2).must_equal true
+      new_date_range = {
+        start_date: Date.new(2018, 03, 12),
+        end_date: Date.new(2018, 03, 15)
+      }
+
+      room_ids = @admin.get_unreserved_rooms(new_date_range)
+      room_ids.include?(1).must_equal true
+      room_ids.include?(2).must_equal true
     end
   end
 
@@ -481,7 +488,7 @@ describe "Admin Class" do
   describe "#check_block(block)" do
     before do
       @date_range = {
-        start_date: Date.new(2018, 03, 5),
+        start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
     end

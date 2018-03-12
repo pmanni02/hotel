@@ -41,15 +41,15 @@ module Hotel
 
 #---------------------------------------------------------------------#
 
-    def make_block(date_range, num_rooms)
-      if num_rooms < 2 || num_rooms > 5
+    def make_block(date_range, num_rooms_in_block)
+      if num_rooms_in_block < 2 || num_rooms_in_block > 5
         raise StandardError.new("Blocks can only contain 2-5 rooms")
       end
 
       unreserved_room_ids = get_unreserved_rooms(date_range)
-      if unreserved_room_ids.length >= num_rooms
+      if unreserved_room_ids.length >= num_rooms_in_block
 
-        room_objs = get_room_objs(unreserved_room_ids.shift(num_rooms))
+        room_objs = get_room_objs(unreserved_room_ids.shift(num_rooms_in_block))
         room_objs.each do |room|
           room.is_in_block = true
         end
@@ -58,7 +58,7 @@ module Hotel
           start_date: date_range[:start_date],
           end_date: date_range[:end_date],
           rooms: room_objs,
-          room_rate: cost_per_night(num_rooms)
+          room_rate: cost_per_night(num_rooms_in_block)
         }
 
         blocks << block
@@ -147,11 +147,7 @@ module Hotel
 
     #NOTE: will not return rooms in blocks.
     def get_unreserved_rooms(date_range)
-      unreserved_room_ids = check_reservations(date_range, reservations) + check_rooms(rooms)
-
-      # blocks.each do |block|
-      #   unreserved_room_ids += check_block(block)
-      # end
+      unreserved_room_ids = check_reservations(date_range, reservations)
 
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
@@ -159,17 +155,19 @@ module Hotel
       blocks.each do |block|
         block_start = block[:start_date]
         block_end = block[:end_date]
+        room_objs = block[:rooms]
+        room_ids = room_objs.map {|room| room.room_id}
 
-        if desired_end_date <= block_start || desired_start_date >= block_end
-          room_objs = block[:rooms]
-          room_ids = room_objs.map {|room| room.room_id}
-          room_ids.each do |id|
-            # if unreserved_room_ids.include?(id)
-              unreserved_room_ids << id
-            # end
+        if desired_start_date >= block_end == true
+          next
+        else
+          # new range isnt > reservation end == overlap
+          if desired_end_date <= block_start == false
+            room_ids.each do |id|
+              unreserved_room_ids.delete(id)
+            end
           end
         end
-
       end
 
       return unreserved_room_ids.sort.uniq
@@ -181,13 +179,16 @@ module Hotel
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
 
-      unreserved_room_ids = []
-      reservations.each do |reservation|
+      unreserved_room_ids = (1..@num_rooms).to_a
+      @reservations.each do |reservation|
         reservation_start = reservation.start_date
         reservation_end = reservation.end_date
-
-        if desired_end_date <= reservation_start || desired_start_date >= reservation_end
-          unreserved_room_ids << reservation.room.room_id
+        if desired_start_date >= reservation_end == true
+          next
+        else
+          if desired_end_date <= reservation_start == false
+            unreserved_room_ids.delete(reservation.room.room_id)
+          end
         end
       end
 
@@ -198,7 +199,7 @@ module Hotel
     def check_rooms(array_of_rooms)
       unreserved_room_ids = []
       array_of_rooms.each do |room|
-        if room.is_reserved == false
+        if room.is_reserved == false && room.is_in_block == false
           unreserved_room_ids << room.room_id
         end
       end
@@ -206,8 +207,14 @@ module Hotel
     end
 
     def check_block(block)
+      unreserved_room_ids = []
       rooms = block[:rooms]
-      return check_rooms(rooms)
+      rooms.each do |room|
+        if room.is_reserved == false
+          unreserved_room_ids << room.room_id
+        end
+      end
+      return unreserved_room_ids
     end
 
     def get_block(room_id)
