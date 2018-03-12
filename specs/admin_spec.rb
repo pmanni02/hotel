@@ -447,7 +447,7 @@ describe "Admin Class" do
 
     it "returns rooms within a block if start_date == end_date of block" do
       num_rooms = 2
-      block = @admin.make_block(@date_range1, num_rooms)
+      @admin.make_block(@date_range1, num_rooms)
 
       new_date_range = {
         start_date: Date.new(2018, 03, 10),

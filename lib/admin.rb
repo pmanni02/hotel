@@ -99,11 +99,13 @@ module Hotel
         selected_room.is_reserved = true
         new_reservation = Hotel::Reservation.new(date_range, selected_room)
         reservations << new_reservation
+        return new_reservation
       else
         raise StandardError.new("Date range OR room ID is invalid")
       end
     end
 
+    #TODO: make this private?
     def check_date_range(date_range)
       start_time = date_range[:start_date].to_time
       end_time = date_range[:end_date].to_time
@@ -147,8 +149,27 @@ module Hotel
     def get_unreserved_rooms(date_range)
       unreserved_room_ids = check_reservations(date_range, reservations) + check_rooms(rooms)
 
+      # blocks.each do |block|
+      #   unreserved_room_ids += check_block(block)
+      # end
+
+      desired_start_date = date_range[:start_date]
+      desired_end_date = date_range[:end_date]
+
       blocks.each do |block|
-        unreserved_room_ids += check_block(block)
+        block_start = block[:start_date]
+        block_end = block[:end_date]
+
+        if desired_end_date <= block_start || desired_start_date >= block_end
+          room_objs = block[:rooms]
+          room_ids = room_objs.map {|room| room.room_id}
+          room_ids.each do |id|
+            # if unreserved_room_ids.include?(id)
+              unreserved_room_ids << id
+            # end
+          end
+        end
+
       end
 
       return unreserved_room_ids.sort.uniq
@@ -156,7 +177,7 @@ module Hotel
 
 #---------------------------------------------------------------------#
 
-    def check_reservations(date_range, array_of_reservations)
+    def check_reservations(date_range, reservations)
       desired_start_date = date_range[:start_date]
       desired_end_date = date_range[:end_date]
 
@@ -225,4 +246,4 @@ module Hotel
     end
 
   end
-end
+end #end of module

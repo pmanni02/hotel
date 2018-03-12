@@ -38,7 +38,7 @@ describe "Reservation Class" do
       room = Hotel::Room.new(1, true)
 
       proc {
-        Hotel::Reservation.new(one_day, room)
+        Hotel::Reservation.new(zero_days, room)
       }.must_raise StandardError
     end
 
@@ -57,7 +57,6 @@ describe "Reservation Class" do
         start_date: Date.new(2018, 03, 05),
         end_date: Date.new(2018, 03, 10)
       }
-      # calculate cost using cost_per_night function in admin
       room = Hotel::Room.new(1, true, is_in_block: true)
       cost = 160 #cost_per_night for 4 rooms
       reservation = Hotel::Reservation.new(date_range, room, cost_per_night: cost)
