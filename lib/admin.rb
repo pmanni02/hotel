@@ -30,7 +30,6 @@ module Hotel
       return rooms
     end
 
-    #TODO: Add check if id is within desired range
     def create_room_instance(id, is_reserved)
       if id.class == Integer
         return Hotel::Room.new(id, is_reserved)
@@ -68,16 +67,13 @@ module Hotel
       end
     end
 
-    #TODO: add #add_reservation_in_block(room_id)
     def add_reservation_in_block(room_id)
 
       if room_id.class != Integer || room_id <= 0 || room_id > num_rooms
         raise ArgumentError.new("Invalid room ID")
       end
-    #   check if room is in block
       block = get_block(room_id)
       if block != {}
-        #get date range
         date_range = {}
         date_range[:start_date] = block[:start_date]
         date_range[:end_date] = block[:end_date]
