@@ -11,7 +11,8 @@ def display_options
   puts "----------------- OPTIONS ----------------"
   puts "SHOW all reservations - reservations OR 1"
   puts "ADD reservation - add reservation OR 2"
-  puts "ADD block - add block OR 3"
+  puts "SHOW all blocks - blocks OR 3"
+  puts "ADD block - add block OR 4"
   puts "To exit this program - exit"
   puts "------------------------------------------"
   puts "OPTION: "
@@ -147,7 +148,17 @@ while command != "exit"
     reservation = get_reservation
     puts "\nReservation Complete!"
     show_reservation(reservation)
-  elsif command == "add block" || command == "3"
+  elsif command == "blocks" || command == "3"
+    if HOTEL.blocks.length == 0
+      puts "There are no blocks"
+    else
+      HOTEL.blocks.each do |block|
+        show_block(block)
+        puts
+      end
+    end
+    puts
+  elsif command == "add block" || command == "4"
     block = get_block
     puts "\nBlock Complete!"
     show_block(block)
