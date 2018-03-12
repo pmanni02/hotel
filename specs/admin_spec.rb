@@ -140,6 +140,7 @@ describe "Admin Class" do
 
     it "successfully creates new reservation for valid room in block" do
       num_rooms = 2
+
       block = @admin.make_block(@date_range, num_rooms)
       rooms = block[:rooms]
       first_room = rooms.first
@@ -477,14 +478,7 @@ describe "Admin Class" do
       @admin.check_reservations(date_range, reservations).must_be_kind_of Array
     end
   end
-
-  describe "#check_rooms" do
-    it "returns an array" do
-      rooms = @admin.rooms
-      @admin.check_rooms(rooms).must_be_kind_of Array
-    end
-  end
-
+  
   describe "#check_block(block)" do
     before do
       @date_range = {

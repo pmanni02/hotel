@@ -161,7 +161,6 @@ module Hotel
         if desired_start_date >= block_end == true
           next
         else
-          # new range isnt > reservation end == overlap
           if desired_end_date <= block_start == false
             room_ids.each do |id|
               unreserved_room_ids.delete(id)
@@ -196,15 +195,15 @@ module Hotel
     end
 
     #TODO: raise error if parameter is not an Array
-    def check_rooms(array_of_rooms)
-      unreserved_room_ids = []
-      array_of_rooms.each do |room|
-        if room.is_reserved == false && room.is_in_block == false
-          unreserved_room_ids << room.room_id
-        end
-      end
-      return unreserved_room_ids
-    end
+    # def check_rooms(array_of_rooms)
+    #   unreserved_room_ids = []
+    #   array_of_rooms.each do |room|
+    #     if room.is_reserved == false && room.is_in_block == false
+    #       unreserved_room_ids << room.room_id
+    #     end
+    #   end
+    #   return unreserved_room_ids
+    # end
 
     def check_block(block)
       unreserved_room_ids = []
