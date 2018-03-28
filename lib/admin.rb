@@ -50,7 +50,6 @@ module Hotel
 
         room_objs = get_room_objs(unreserved_room_ids.shift(num_rooms_in_block))
         room_objs.each do |room|
-          # room.is_in_block = true
           room.is_in_block = room.in_block
         end
 
@@ -79,7 +78,6 @@ module Hotel
         date_range[:start_date] = block[:start_date]
         date_range[:end_date] = block[:end_date]
         room = get_room(room_id)
-        # room.is_reserved = true
         room.is_reserved = room.reserved
         cost = block[:room_rate]
 
@@ -103,7 +101,6 @@ module Hotel
       end
     end
 
-    #TODO: make this private?
     def check_date_range(date_range)
       start_time = date_range[:start_date].to_time
       end_time = date_range[:end_date].to_time
@@ -146,9 +143,6 @@ module Hotel
     #NOTE: will not return rooms in blocks.
     def get_unreserved_rooms(date_range)
       unreserved_room_ids = check_reservations(date_range, reservations)
-
-      # desired_start_date = date_range[:start_date]
-      # desired_end_date = date_range[:end_date]
 
       blocks.each do |block|
         block_start = block[:start_date]
