@@ -10,5 +10,13 @@ module Hotel
       @is_in_block = is_in_block
     end
 
+    def in_block
+      return @is_in_block == true ? false : true
+    end
+
+    def reserved
+      return @is_reserved == true ? false : true
+    end
+
   end
 end

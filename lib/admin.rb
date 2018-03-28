@@ -50,7 +50,8 @@ module Hotel
 
         room_objs = get_room_objs(unreserved_room_ids.shift(num_rooms_in_block))
         room_objs.each do |room|
-          room.is_in_block = true
+          # room.is_in_block = true
+          room.is_in_block = room.in_block
         end
 
         block = {
@@ -78,7 +79,8 @@ module Hotel
         date_range[:start_date] = block[:start_date]
         date_range[:end_date] = block[:end_date]
         room = get_room(room_id)
-        room.is_reserved = true
+        # room.is_reserved = true
+        room.is_reserved = room.reserved
         cost = block[:room_rate]
 
         new_reservation = Hotel::Reservation.new(date_range, room, cost_per_night: cost)
